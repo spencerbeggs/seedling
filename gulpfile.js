@@ -24,14 +24,12 @@ tasks.nodemon({
 	]
 });
 
-gulp.task("beautify-less", function() {
-	var settings = JSON.parse(fs.readFileSync("./.jsbeautifyrc", "utf8"));
-	tasks.beautify({
-		src: ["./less/**/*.less"],
-		dest: "./less",
-		config: settings.css,
-		name: "beautify-less"
-	});
+
+tasks.beautify({
+	src: ["./less/**/*.less"],
+	dest: "./less",
+	name: "beautify-less",
+	config: JSON.parse(fs.readFileSync("./.jsbeautifyrc", {encoding: "utf-8"}))
 });
 
 tasks.json({

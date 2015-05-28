@@ -15,7 +15,6 @@ var eol = require("gulp-eol");
  * @param {string|string[]} [options.src=./**\/*.json] - Glob path(s) the search for JSON files.
  * @param {string} [options.dest=./] - Destination to output formatted files.
  * @param {string} [options.space=\t] - Space delimiter.
- * @return {Function}
  */
 function task(options) {
 	options = options || {};
