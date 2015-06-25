@@ -1,0 +1,161 @@
+@import "colors";
+
+.borderBox() {
+	box-sizing: border-box;
+	*,
+	*:before,
+	*:after {
+		box-sizing: border-box;
+	}
+}
+
+.clearfix() {
+	&:after {
+		content: ".";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden;
+	}
+}
+
+.centered() {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.center() {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.centerChild() {
+	text-align: center;
+	line-height: 0;
+	> * {
+		display: inline-block;
+		text-align: left;
+		line-height: 1;
+	}
+}
+
+.unlist() {
+	margin: 0;
+	padding: 0;
+	> li {
+		list-style-type: none;
+	}
+}
+
+.block(@marginRight: 10%, @limit: 0) {
+	.clearfix();
+	> * {
+		float: left;
+		margin-right: @marginRight;
+		&.last {
+			margin-right: 0;
+		}
+		&:last-child {
+			margin-right: 0;
+		}
+		& when (@limit > 0) {
+			&:nth-child(@{limit}n) {
+				margin-right: 0;
+			}
+		}
+	}
+}
+
+.button(@color: @red) {
+	color: white;
+	text-decoration: none;
+	padding: 5px 10px;
+	height: 29px;
+	line-height: 29px;
+	.rounded(5px);
+	background-color: @color;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: 100;
+	font-size: 13px;
+	font-family: "Georgia", "Times New Roman", "Times", "serif";
+	&:hover {
+		background-color: desaturate(@color, 30%);
+	}
+	&.disabled,
+	:disabled {
+		background-color: #e3e3e3;
+		cursor: default;
+	}
+}
+
+.arrow-up(@width: 5px, @color: black) {
+	width: 0;
+	height: 0;
+	border-left: @width solid transparent;
+	border-right: @width solid transparent;
+	border-bottom: @width solid @color;
+}
+
+.arrow-down(@width: 5px, @color: black) {
+	width: 0;
+	height: 0;
+	border-left: @width solid transparent;
+	border-right: @width solid transparent;
+	border-top: @width solid @color;
+}
+
+.arrow-right(@width: 5px, @color: black) {
+	width: 0;
+	height: 0;
+	border-top: @width solid transparent;
+	border-bottom: @width solid transparent;
+	border-left: @width solid @color;
+}
+
+.arrow-left(@width: 5px, @color: black) {
+	width: 0;
+	height: 0;
+	border-top: @width solid transparent;
+	border-bottom: @width solid transparent;
+	border-right: @width solid @color;
+}
+
+.diagonal-top(@width: 5px, @color: black) {
+	height: @width;
+	width: @width;
+	overflow: hidden;
+	> * {
+		position: absolute;
+		top: @width;
+		left: 0;
+	}
+	&:after {
+		height: @width;
+		width: @width;
+		display: block;
+		content: "";
+		position: relative;
+		top: -(@width);
+		.arrow-right(@width, @color);
+	}
+}
+
+.aspectBox(@width: 100%, @height: 100%) {
+	position: relative;
+	width: @width;
+	&:before {
+		content: "";
+		display: block;
+		padding-top: @width / @height;
+	}
+	> * {
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+	}
+}

@@ -26,8 +26,13 @@
 		"preserve_newlines": true
 	},
 	"css": {
-		"indent_char": "\t",
 		"indent_size": 1,
-		"file_types": [".less"]
+		"indent_char": "\t",
+		"selector_separator_newline": false,
+		"preserve_newlines": true,
+		"newline_between_rules": false,
+		"allowed_file_extensions": [
+			"less", "css"
+		]
 	}
 }

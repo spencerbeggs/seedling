@@ -1,4 +1,3 @@
-/*jshint nonew: false */
 "use strict";
 var path = require("path");
 var env = require("node-env-file");
@@ -24,12 +23,13 @@ tasks.nodemon({
 	]
 });
 
-
 tasks.beautify({
 	src: ["./less/**/*.less"],
 	dest: "./less",
 	name: "beautify-less",
-	config: JSON.parse(fs.readFileSync("./.jsbeautifyrc", {encoding: "utf-8"}))
+	config: JSON.parse(fs.readFileSync("./.jsbeautifyrc", {
+		encoding: "utf-8"
+	})).css
 });
 
 tasks.json({
@@ -59,7 +59,7 @@ tasks.zone({
 	less: "./less/default.less"
 });
 
-gulp.task("beautify", gulp.series(["json", "beautify-less"]));
+gulp.task("beautify", gulp.series(["beautify-less"]));
 
 gulp.task("test", gulp.series(gulp.series(["jshint"])));
 
