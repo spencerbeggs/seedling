@@ -28,11 +28,11 @@
 	"css": {
 		"indent_size": 1,
 		"indent_char": "\t",
-		"selector_separator_newline": false,
+		"selector_separator_newline": true,
 		"preserve_newlines": true,
-		"newline_between_rules": false,
 		"allowed_file_extensions": [
-			"less", "css"
+			"less",
+			"css"
 		]
 	}
 }

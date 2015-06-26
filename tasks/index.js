@@ -3,6 +3,7 @@
  * @module tasks
  * @desc A wrapper for all the Gulp tasks.
  * @see module:tasks/beautify
+ * @see module:tasks/beautifyCSS
  * @see module:tasks/browserify
  * @see module:tasks/browserSync
  * @see module:tasks/buildCss
@@ -13,6 +14,7 @@
  * @see module:tasks/less
  * @see module:tasks/nodemon
  * @see module:tasks/zone
+ * @borrows module:tasks/beautify-css~task as beautifyCSS
  * @borrows module:tasks/beautify~task as beautify
  * @borrows module:tasks/browserify~task as browserify
  * @borrows module:tasks/browserSync~task as browserSync
@@ -27,6 +29,7 @@
  */
 
 module.exports.beautify = require("./beautify");
+module.exports.beautifyCSS = require("./beautify-css");
 module.exports.browserify = require("./browserify");
 module.exports.browserSync = require("./browser-sync");
 module.exports.buildCss = require("./build-css");

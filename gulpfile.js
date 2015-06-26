@@ -6,7 +6,6 @@ var pjson = require("./package.json");
 process.env.APP_VERSION = pjson.version;
 var gulp = require("gulp");
 var tasks = require("./tasks");
-var fs = require("fs");
 
 tasks.nodemon({
 	start: "lib/index.js",
@@ -23,13 +22,10 @@ tasks.nodemon({
 	]
 });
 
-tasks.beautify({
+tasks.beautifyCSS({
 	src: ["./less/**/*.less"],
 	dest: "./less",
-	name: "beautify-less",
-	config: JSON.parse(fs.readFileSync("./.jsbeautifyrc", {
-		encoding: "utf-8"
-	})).css
+	name: "beautify-less"
 });
 
 tasks.json({
