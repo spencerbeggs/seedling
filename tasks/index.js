@@ -2,6 +2,7 @@
 /**
  * @module tasks
  * @desc A wrapper for all the Gulp tasks.
+ * @see module:tasks/aws
  * @see module:tasks/beautify
  * @see module:tasks/beautifyCSS
  * @see module:tasks/browserify
@@ -28,6 +29,7 @@
  * @borrows module:tasks/zone~task as zone
  */
 
+module.exports.aws = require("./aws");
 module.exports.beautify = require("./beautify");
 module.exports.beautifyCSS = require("./beautify-css");
 module.exports.browserify = require("./browserify");

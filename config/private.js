@@ -15,6 +15,10 @@ module.exports.proxy = {
 	port: process.env.PROXY_PORT || "7777"
 };
 
+module.exports.server = {
+	port: process.env.SERVER_PORT || "3000"
+};
+
 /** [MongoDB]{@link https://www.mongodb.org} connection information.
  * @type {object}
  * @prop {string} username - Username to authenitcate with. Can be set via <code>MONGO_USERNAME</code> enviornment variable.
@@ -25,10 +29,17 @@ module.exports.proxy = {
  * @prop {string} connect - Calculated MongoDB connection string
  */
 module.exports.mongo = {
-    username: process.env.MONGO_USERNAME,
-    password: process.env.MONGO_PASSWORD,
-    hostname: process.env.MONGO_HOSTNAME || "localhost",
-    port: process.env.MONGO_PORT || "27017",
-    database: process.env.MONGO_DATABASE || ""
+	username: process.env.MONGO_USERNAME,
+	password: process.env.MONGO_PASSWORD,
+	hostname: process.env.MONGO_HOSTNAME || "localhost",
+	port: process.env.MONGO_PORT || "27017",
+	database: process.env.MONGO_DATABASE || ""
 };
+
+module.exports.aws = {
+	key: process.env.AWS_KEY,
+	secret: process.env.AWS_SECRET,
+	staticBucket: process.env.AWS_STATIC_BUCKET
+};
+
 module.exports.mongo.connect = "mongodb://" + ((module.exports.mongo.username) ? module.exports.mongo.username + ":" : "") + ((module.exports.mongo.password) ? module.exports.mongo.password + "@" : "") + module.exports.mongo.hostname + "/" + module.exports.mongo.database;

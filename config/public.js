@@ -12,7 +12,6 @@
  */
 module.exports.env = process.env.NODE_ENV || "unknown";
 
-
 /** Contains config information about the application itself.
  * @type {object}
  * @prop {string} [name=App] - The name of the applicaiton. Can be set with the <code>APP_NAME</code> enviornmental variable.
@@ -38,18 +37,18 @@ module.exports.env = process.env.NODE_ENV || "unknown";
  * @prop {boolean} not.staging - True if the environment is not staging.
  * @prop {boolean} not.prod - True if the environment is not production.
  * @prop {boolean} not.production - True if the environment is not production.
-*/
+ */
 module.exports.app = {
 	name: process.env.APP_NAME || "App",
 	slug: process.env.APP_SLUG || "app",
 	protocol: process.env.APP_PROTOCOL || "http",
 	subdomain: process.env.APP_SUBDOMAIN,
 	domain: process.env.APP_DOMAIN || "localhost",
-	port: process.env.APP_PORT || "3000",
+	port: process.env.APP_PORT || "80",
 	version: process.env.APP_VERSION
 };
-module.exports.app.hostname = module.exports.app.subdomain ? module.exports.app.subdomain + "." + module.exports.app.domain : "" + module.exports.app.domain;
-module.exports.app.url = module.exports.app.protocol + "://" + module.exports.app.hostname + ([80, 443].indexOf(module.exports.app.port) === -1 ? ":" + module.exports.app.port : "");
+module.exports.app.hostname = module.exports.app.subdomain ? module.exports.app.subdomain + "." + module.exports.app.domain : module.exports.app.domain;
+module.exports.app.url = module.exports.app.protocol + "://" + module.exports.app.hostname + (["80", "443"].indexOf(module.exports.app.port) === -1 ? ":" + module.exports.app.port : "");
 
 module.exports.app.is = {
 	dev: module.exports.env === "development",

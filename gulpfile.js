@@ -55,6 +55,13 @@ tasks.zone({
 	less: "./less/default.less"
 });
 
+tasks.aws({
+	routes: [{
+		src: "/",
+		dest: "index.html"
+	}]
+});
+
 gulp.task("beautify", gulp.series(["beautify-less"]));
 
 gulp.task("test", gulp.series(gulp.series(["jshint"])));
@@ -62,3 +69,5 @@ gulp.task("test", gulp.series(gulp.series(["jshint"])));
 gulp.task("dev", gulp.series(gulp.parallel(["above-the-fold", "default"]), "nodemon", "browser-sync"));
 
 gulp.task("build", gulp.parallel("above-the-fold-build", "default-build", "jsdoc"));
+
+gulp.task("aws", gulp.series("build", "aws"));

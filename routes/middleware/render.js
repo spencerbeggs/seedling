@@ -1,24 +1,28 @@
 "use strict";
+var pjson = require("../../package.json");
 var config = require("../../config");
 var minify = require("html-minifier").minify;
 var html = require("html");
 
 function fullUrls(file) {
-	var suffix = "-" + config.app.version;
- 	if (config.env !== "development") {
-		suffix += ".min";
-	}
-	if (file.url.startsWith("/")) {
-		let arr = file.url.split(".");
-		arr[arr.length - 2] = arr[arr.length - 2] + suffix;
-		file.url = config.app.url + arr.join(".");
+	if (!file.processed) {
+		var suffix = "-" + config.app.version;
+		if (config.env !== "development") {
+			suffix += ".min";
+		}
+		if (file.url.startsWith("/")) {
+			let arr = file.url.split(".");
+			arr[arr.length - 2] = arr[arr.length - 2] + suffix;
+			file.url = arr.join(".");
+		}
+		file.processed = true;
 	}
 }
 
 module.exports = function(req, res, next) {
 	if (config.env === "development") {
 		res.locals.js.body.push({
-			url: config.app.protocol + "://" + config.app.hostname + ":5000/browser-sync/browser-sync-client.2.7.1.js",
+			url: config.app.protocol + "://localhost:5000/browser-sync/browser-sync-client." + pjson.devDependencies["browser-sync"] + ".js",
 			async: true
 		});
 	}
