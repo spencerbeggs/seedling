@@ -44,7 +44,6 @@ function task(options) {
 	options.inchar = _.has(conf, "indent_char") ? String(conf.indent_char) : " ";
 	options.insize = _.has(conf, "indent_size") ? Number(conf.indent_size) : 4;
 	options.cssinsertlines = _.has(conf, "newline_between_rules") ? Boolean(conf.newline_between_rules) : false;
-	console.log(options);
 	var name = options.name ? options.name : "beautify-css";
 	var dest = options.dest ? options.dest : "./";
 	gulp.task(name, function() {
