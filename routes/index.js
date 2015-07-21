@@ -6,4 +6,7 @@ module.exports = function(app) {
 	app.use(middleware.defaults);
 	app.use(require("./pages"));
 	app.use(middleware.render);
+	app.use(function(req, res) {
+		res.status(404).send("404");
+	});
 };
