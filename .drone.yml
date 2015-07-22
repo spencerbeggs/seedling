@@ -1,1 +1,1 @@
-image: iojs:onbuild
+image: https://raw.githubusercontent.com/nodejs/docker-iojs/17c560895ea29460c8ac59ba0605878cb7679dd1/2.4/onbuild/Dockerfile
