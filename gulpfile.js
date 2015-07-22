@@ -1,10 +1,18 @@
 "use strict";
+var gulp = require("gulp");
+var gutil = require("gulp-util");
 var path = require("path");
 var env = require("node-env-file");
-env(process.env.ENV_FILE || path.resolve(__dirname, "./.env"));
+try {
+	var envFilePath = __dirname + "/.env";
+	env(process.env.ENV_FILE || envFilePath);
+	gutil.log("[GULP] Loaded enviornment variables from " + envFilePath);
+} catch (err) {
+	console.log(err);
+	gutil.log("[WARNING] No .env file found");
+}
 var pjson = require("./package.json");
 process.env.APP_VERSION = pjson.version;
-var gulp = require("gulp");
 var tasks = require("./tasks");
 
 tasks.nodemon({
