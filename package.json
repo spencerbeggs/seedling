@@ -50,7 +50,8 @@
 	"browserify": {
 		"transform": [
 			[
-				"reactify", {
+				"reactify",
+				{
 					"es6": true
 				}
 			],

@@ -22,7 +22,7 @@ function fullUrls(file) {
 module.exports = function(req, res, next) {
 	if (config.env === "development") {
 		res.locals.js.body.push({
-			url: config.app.protocol + "://localhost:5000/browser-sync/browser-sync-client." + pjson.devDependencies["browser-sync"] + ".js",
+			url: config.app.protocol + "://localhost:5000/browser-sync/browser-sync-client." + pjson.devDependencies["browser-sync"].replace("^", "") + ".js",
 			async: true
 		});
 	}
