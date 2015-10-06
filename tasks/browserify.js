@@ -1,6 +1,8 @@
 "use strict";
 var gulp = require("gulp");
 var browserify = require("browserify");
+var babel = require("gulp-babel");
+var babelify = require("babelify");
 var watchify = require("watchify");
 var browserSync = require("browser-sync");
 var notify = require("gulp-notify");
@@ -8,6 +10,8 @@ var gutil = require("gulp-util");
 var prettyHrtime = require("pretty-hrtime");
 var source = require("vinyl-source-stream");
 var envify = require("envify/custom");
+var buffer = require("vinyl-buffer");
+var sourcemaps = require("gulp-sourcemaps");
 
 /**
  * @module tasks/browserify
@@ -27,6 +31,9 @@ function task(options) {
 	var dest = options.dest ? options.dest : "./";
 	var arr = dest.split("/");
 	var output, outputPath;
+	if (typeof options.src === "string") {
+		options.src = [options.src];
+	}
 	if (arr[arr.length - 1] !== "") {
 		var outputArr = arr[arr.length - 1].split(".");
 		output = outputArr.join(".");
@@ -45,59 +52,58 @@ function task(options) {
 	if (!options.dest) {
 		throw new Error("You must specify an output.");
 	}
-	gulp.task(name, function() {
-
-		function handleErrors() {
-			var args = Array.prototype.slice.call(arguments);
-
-			// Send error to notification center with gulp-notify
-			notify.onError({
-				title: "Compile Error",
-				message: "<%= error.message %>"
-			}).apply(this, args);
-
-			// Keep gulp from hanging on this task
-			this.emit("end");
-		}
-		var startTime;
-
-		var logger = {
-			start: function(filepath) {
-				startTime = process.hrtime();
-				// gutil.log("Bundling", gutil.colors.green(filepath) + "...");
-			},
-
-			end: function(filepath) {
-				var taskTime = process.hrtime(startTime);
-				var prettyTime = prettyHrtime(taskTime);
-				gutil.log("[browserify] Bundled", gutil.colors.green(filepath), "in", gutil.colors.magenta(prettyTime));
+	return gulp.task(name, function() {
+		function rebundle(changes) {
+			if (changes) {
+				gutil.log("[browserify] Changed: " + changes.join(", "));
 			}
-		};
-
-		function rebundle() {
-			logger.start(output);
+			var startTime = process.hrtime();
 			var stream = bundler.bundle();
 			return stream
-				.on("error", handleErrors)
+				.on("error", function() {
+					var args = Array.prototype.slice.call(arguments);
+					// Send error to notification center with gulp-notify
+					notify.onError({
+						title: "Compile Error",
+						message: "<%= error.message %>"
+					}).apply(this, args);
+					// Keep gulp from hanging on this task
+					this.emit("end");
+				})
 				.pipe(source(output))
+				.pipe(buffer())
+				.pipe(sourcemaps.init({
+					loadMaps: true
+				}))
+				// .pipe(babel({
+				// 	sourceMaps: "inline"
+				// }))
+				.pipe(sourcemaps.write("./"))
 				.pipe(gulp.dest(outputPath))
 				.on("end", function() {
 					// Log when bundling completes
-					logger.end(output);
+					var taskTime = process.hrtime(startTime);
+					var prettyTime = prettyHrtime(taskTime);
+					gutil.log("[browserify] Bundled", gutil.colors.green(output), "in", gutil.colors.magenta(prettyTime));
 					browserSync.reload();
 				});
 		}
 
-		var bundler = browserify(options.src, {
-			cache: {},
-			packageCache: {},
-			fullPaths: true,
+		// add custom browserify options here
+		var customOpts = {
+			entries: options.src,
 			debug: true
-		}).transform(envify({
-  			BROWSERIFY: "true"
+		};
+		var opts = Object.assign({}, watchify.args, customOpts);
+		var bundler = watchify(browserify(opts));
+		// bundler.transform(babelify.configure({
+		// 	optional: ["runtime"]
+		// }));
+		bundler.transform(envify({
+			BROWSERIFY: "true"
 		}));
-		var watcher = watchify(bundler);
-		watcher.on("update", rebundle);
+		bundler.on("update", rebundle); // on any dep update, runs the bundler
+		bundler.on("log", gutil.log); // output build logs to terminal
 		return rebundle();
 	});
 }
