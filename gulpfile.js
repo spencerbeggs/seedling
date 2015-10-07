@@ -15,6 +15,8 @@ var pjson = require("./package.json");
 process.env.APP_VERSION = pjson.version;
 var tasks = require("./tasks");
 
+global._gulpTaskNames = [];
+
 tasks.nodemon({
 	start: "lib/index.js",
 	watch: [
@@ -54,13 +56,13 @@ tasks.jsdoc({
 
 tasks.zone({
 	name: "above-the-fold",
-	less: "./less/above-the-fold.less"
+	css: "./less/above-the-fold.less"
 });
 
 tasks.zone({
 	name: "default",
 	js: "./app/default.js",
-	less: "./less/default.less"
+	css: "./less/default.less"
 });
 
 tasks.aws({

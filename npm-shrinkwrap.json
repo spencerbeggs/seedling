@@ -41,7 +41,7 @@
           "dependencies": {
             "inherits": {
               "version": "2.0.1",
-              "from": "inherits@>=2.0.0 <3.0.0",
+              "from": "inherits@>=2.0.1 <2.1.0",
               "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
             },
             "statuses": {
@@ -199,9 +199,9 @@
       }
     },
     "dynamic-reverse-proxy": {
-      "version": "0.7.0-alpha2",
-      "from": "dynamic-reverse-proxy@>=0.7.0-alpha2 <0.8.0",
-      "resolved": "https://registry.npmjs.org/dynamic-reverse-proxy/-/dynamic-reverse-proxy-0.7.0-alpha2.tgz"
+      "version": "0.7.0-alpha3",
+      "from": "dynamic-reverse-proxy@>=0.7.0-alpha3 <0.8.0",
+      "resolved": "https://registry.npmjs.org/dynamic-reverse-proxy/-/dynamic-reverse-proxy-0.7.0-alpha3.tgz"
     },
     "express": {
       "version": "4.13.3",

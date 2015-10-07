@@ -10,7 +10,10 @@ router.get("/", function(req, res, next) {
 	res.locals.pageId = "home";
 	res.locals.template = "pages/home";
 	res.locals.css.head.push({
-		url: "/css/default.css",
+		url: "/css/seedling-app.css",
+	});
+	res.locals.css.head.push({
+		url: "/css/seedling-default.css",
 	});
 	res.locals.js.body.push({
 		url: "/js/default.js",
