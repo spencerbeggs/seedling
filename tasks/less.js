@@ -1,14 +1,20 @@
 "use strict";
-var gulp = require("gulp");
-var config = require("../config");
-var less = require("gulp-less");
 var browserSync = require("browser-sync");
+var config = require("../config");
+var gulp = require("gulp");
+var gulpif = require("gulp-if");
 var gutil = require("gulp-util");
+var less = require("gulp-less");
+var minifyCSS = require("gulp-minify-css");
+var prefixer = require("less-plugin-autoprefix");
 var prettyHrtime = require("pretty-hrtime");
-var sourcemaps = require("gulp-sourcemaps");
 var rename = require("gulp-rename");
+var sourcemaps = require("gulp-sourcemaps");
 var watch = require("gulp-watch");
 
+var autoprefixer = new prefixer({
+	browsers: ["last 3 versions"]
+});
 /**
  * @module tasks/less
  * @description Factory function that sets up a new [Gulp LESS]{@link https://github.com/plus3network/gulp-less} task to build CSS for development.
@@ -26,10 +32,16 @@ function task(options) {
 	var name = options.name ? options.name : "less";
 	var dest = options.dest ? options.dest : "./";
 	var arr = dest.split("/");
-	var output, outputPath, outputArr, filename;
-	outputArr = arr[arr.length - 1].split(".");
-	outputArr[0] = filename = outputArr[0] + "-" + config.app.version;
-	output = outputArr.join(".");
+	var output, outputPath;
+	if (typeof options.src === "string") {
+		options.src = [options.src];
+	}
+	if (arr[arr.length - 1] !== "") {
+		var outputArr = arr[arr.length - 1].split(".");
+		output = outputArr.join(".");
+	} else {
+		output = dest;
+	}
 	if (arr.length > 1) {
 		arr.pop();
 		outputPath = arr.join("/");
@@ -56,12 +68,19 @@ function task(options) {
 		function rebundle() {
 			logger.start(output);
 			return gulp.src(options.src)
-				.pipe(sourcemaps.init())
-				.pipe(less())
-				.pipe(rename(function(path) {
-					path.basename = filename;
+				.pipe(gulpif(config.app.not.production, sourcemaps.init({
+					loadMaps: true
+				})))
+				.pipe(less({
+					plugins: [autoprefixer]
 				}))
-				.pipe(sourcemaps.write("./"))
+				.pipe(gulpif(config.app.is.production, minifyCSS({
+					keepSpecialComments: 0
+				})))
+				.pipe(rename(function(path) {
+					path.basename = output.replace(".css", "");
+				}))
+				.pipe(gulpif(config.app.not.production, sourcemaps.write("./")))
 				.pipe(gulp.dest(outputPath))
 				.on("end", function() {
 					logger.end(output);

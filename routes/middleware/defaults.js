@@ -12,7 +12,7 @@ module.exports = function(req, res, next) {
 		body: []
 	};
 	res.locals.css.head.push({
-		url: "/css/seedling-above-the-fold.css",
+		url: "/css/above-the-fold.css",
 		async: true
 	});
 	next();

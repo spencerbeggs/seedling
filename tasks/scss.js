@@ -26,10 +26,16 @@ function task(options) {
 	var name = options.name ? options.name : "less";
 	var dest = options.dest ? options.dest : "./";
 	var arr = dest.split("/");
-	var output, outputPath, outputArr, filename;
-	outputArr = arr[arr.length - 1].split(".");
-	outputArr[0] = filename = outputArr[0] + "-" + config.app.version;
-	output = outputArr.join(".");
+	var output, outputPath;
+	if (typeof options.src === "string") {
+		options.src = [options.src];
+	}
+	if (arr[arr.length - 1] !== "") {
+		var outputArr = arr[arr.length - 1].split(".");
+		output = outputArr.join(".");
+	} else {
+		output = dest;
+	}
 	if (arr.length > 1) {
 		arr.pop();
 		outputPath = arr.join("/");

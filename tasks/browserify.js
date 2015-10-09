@@ -1,6 +1,4 @@
 "use strict";
-var babel = require("gulp-babel");
-var babelify = require("babelify");
 var browserify = require("browserify");
 var browserSync = require("browser-sync");
 var buffer = require("vinyl-buffer");
@@ -79,9 +77,6 @@ function task(options) {
 					loadMaps: true
 				})))
 				.pipe(gulpif(config.app.is.production, uglify()))
-				// .pipe(babel({
-				// 	sourceMaps: "inline"
-				// }))
 				.pipe(gulpif(config.app.not.production, sourcemaps.write("./")))
 				.pipe(gulp.dest(outputPath))
 				.on("end", function() {
@@ -100,12 +95,10 @@ function task(options) {
 		};
 		var opts = Object.assign({}, watchify.args, customOpts);
 		var bundler = watchify(browserify(opts));
-		// bundler.transform(babelify.configure({
-		// 	optional: ["runtime"]
-		// }));
 		bundler.transform(envify({
 			BROWSERIFY: "true"
 		}));
+
 		bundler.on("update", rebundle); // on any dep update, runs the bundler
 		bundler.on("log", gutil.log); // output build logs to terminal
 		return rebundle();

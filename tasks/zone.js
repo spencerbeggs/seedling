@@ -69,14 +69,14 @@ function task(options) {
 				less({
 					name: taskName,
 					src: file,
-					dest: "public/css/" + baseName + ".css"
+					dest: "public/css/" + baseName + suffix + ".css"
 				});
 			} else if (file.includes(".scss")) {
 				taskName = baseName + "-scss";
 				scss({
 					name: taskName,
 					src: file,
-					dest: "public/css/" + baseName + ".css"
+					dest: "public/css/" + baseName + suffix + ".css"
 				});
 			}
 			devTasks.push(taskName);
