@@ -56,13 +56,13 @@ tasks.jsdoc({
 
 tasks.zone({
 	name: "above-the-fold",
-	css: "./less/above-the-fold.less"
+	css: "./styles/less/above-the-fold.less"
 });
 
 tasks.zone({
 	name: "default",
 	js: "./app/default.js",
-	css: "./less/default.less"
+	css: "./styles/less/default.less"
 });
 
 tasks.aws({
@@ -78,6 +78,6 @@ gulp.task("test", gulp.series(gulp.series(["jshint"])));
 
 gulp.task("dev", gulp.series(gulp.parallel(["above-the-fold", "default"]), "nodemon", "browser-sync"));
 
-gulp.task("build", gulp.parallel("above-the-fold-build", "default-build", "jsdoc"));
+gulp.task("build", gulp.parallel("above-the-fold", "default", "jsdoc"));
 
 gulp.task("aws", gulp.series("build", "aws"));

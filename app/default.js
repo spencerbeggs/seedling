@@ -1,3 +1,4 @@
+require("babelify/polyfill");
 class Foo {
 	constructor(name) {
 		this.name = name;

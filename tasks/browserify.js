@@ -1,17 +1,20 @@
 "use strict";
-var gulp = require("gulp");
-var browserify = require("browserify");
 var babel = require("gulp-babel");
 var babelify = require("babelify");
-var watchify = require("watchify");
+var browserify = require("browserify");
 var browserSync = require("browser-sync");
-var notify = require("gulp-notify");
+var buffer = require("vinyl-buffer");
+var config = require("../config");
+var envify = require("envify/custom");
+var gulp = require("gulp");
+var gulpif = require("gulp-if");
 var gutil = require("gulp-util");
+var notify = require("gulp-notify");
 var prettyHrtime = require("pretty-hrtime");
 var source = require("vinyl-source-stream");
-var envify = require("envify/custom");
-var buffer = require("vinyl-buffer");
 var sourcemaps = require("gulp-sourcemaps");
+var uglify = require("gulp-uglify");
+var watchify = require("watchify");
 
 /**
  * @module tasks/browserify
@@ -72,13 +75,14 @@ function task(options) {
 				})
 				.pipe(source(output))
 				.pipe(buffer())
-				.pipe(sourcemaps.init({
+				.pipe(gulpif(config.app.not.production, sourcemaps.init({
 					loadMaps: true
-				}))
+				})))
+				.pipe(gulpif(config.app.is.production, uglify()))
 				// .pipe(babel({
 				// 	sourceMaps: "inline"
 				// }))
-				.pipe(sourcemaps.write("./"))
+				.pipe(gulpif(config.app.not.production, sourcemaps.write("./")))
 				.pipe(gulp.dest(outputPath))
 				.on("end", function() {
 					// Log when bundling completes

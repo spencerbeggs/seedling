@@ -2,9 +2,9 @@
 var gulp = require("gulp");
 var config = require("../config");
 var browserify = require("./browserify");
-var buildJs = require("./build-js");
-var buildCss = require("./build-css");
 var less = require("./less");
+var scss = require("./scss");
+var _ = require("lodash");
 
 /**
  * @module tasks/zone
@@ -40,7 +40,7 @@ function task(options) {
 		devTasks.push(devTaskName);
 
 		let buildTaskName = options.name + "-js-build";
-		buildJs({
+		browserify({
 			name: buildTaskName,
 			src: options.js,
 			dest: "./public/js/" + options.name + suffix + ".js"
@@ -48,27 +48,42 @@ function task(options) {
 		buildTasks.push(buildTaskName);
 	}
 
-	if (options.less) {
+	if (options.css) {
+		if (typeof options.css === "string") {
+			options.css = [options.css];
+		}
+		console.log(options.css);
 
-		let devTaskName = options.name + "-less";
-		less({
-			name: devTaskName,
-			src: options.less,
-			dest: "public/css/" + options.name + ".css"
+		options.css.forEach(function(file) {
+			var baseName, taskName;
+			let fileArr = file.split("/");
+			let filename = fileArr[fileArr.length - 1];
+			let fileBase = filename.split(".")[0];
+			if (options.css.length > 1) {
+				baseName = options.name + "-" + fileBase;
+			} else {
+				baseName = options.name;
+			}
+			if (file.includes(".less")) {
+				taskName = baseName + "-less";
+				less({
+					name: taskName,
+					src: file,
+					dest: "public/css/" + baseName + ".css"
+				});
+			} else if (file.includes(".scss")) {
+				taskName = baseName + "-scss";
+				scss({
+					name: taskName,
+					src: file,
+					dest: "public/css/" + baseName + ".css"
+				});
+			}
+			devTasks.push(taskName);
 		});
-		devTasks.push(devTaskName);
 
-		let buildTaskName = options.name + "-less-build";
-		buildCss({
-			name: buildTaskName,
-			src: options.css,
-			dest: "./public/js/" + options.name + suffix + ".js",
-		});
-		buildTasks.push(buildTaskName);
 	}
-
 	gulp.task(options.name, gulp.parallel(devTasks));
-	gulp.task(options.name + "-build", gulp.parallel(buildTasks));
 }
 
 module.exports = task;
