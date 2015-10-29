@@ -1,6 +1,15 @@
+@import "bootstrap";
+
 $blue: #fff;
 
 body {
     background-color: $blue;
 }
- 
+
+main {
+    @extend .container;
+}
+
+form {
+    @extend .col-md-6;
+}

@@ -1,4 +1,6 @@
 require("babelify/polyfill");
+var $ = require("jquery");
+var _ = require("lodash");
 class Foo {
 	constructor(name) {
 		this.name = name;

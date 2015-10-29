@@ -1,19 +1,25 @@
 <!DOCTYPE html>
-<html data-env="{{env}}">
+<html data-env="{{env}}" lang="en">
 
 	<head>
 		<title>{{app.name}}</title>
+		<meta content="width=device-width, initial-scale=1" name="viewport">
+		<meta content="ie=edge" http-equiv="x-ua-compatible">
 		{{#each css.head}}
-		<link href="{{url}}" rel="stylesheet"> {{/each}} {{#each js.head}}
-		<script {{#if id}}id={{this.id}} {{/if}}{{#if async}}async {{/if}}src="{{this.url}}" type="text/javascript"></script>
+			<link href="{{url}}" rel="stylesheet">
+		{{/each}}
+		{{#each js.head}}
+			<script async id={{this.id}} src="{{this.url}}" type="text/javascript" {{#if async}} {{#if id}} {{/if}} {{/if}}></script>
 		{{/each}}
 	</head>
 
 	<body id="{{pageId}}">
-		<main>{{{body}}}</main>
+		<main id="main">{{{body}}}</main>
 		{{#each css.body}}
-		<link href="{{this}}" rel="stylesheet"> {{/each}} {{#each js.body}}
-		<script {{#if id}}id={{this.id}} {{/if}}{{#if async}}async {{/if}}src="{{this.url}}" type="text/javascript"></script>
+			<link href="{{this}}" rel="stylesheet">
+		{{/each}}
+		{{#each js.body}}
+			<script async id="{{this.id}}" src="{{this.url}}" type="text/javascript" {{#if async}} {{#if id}} {{/if}} {{/if}}></script>
 		{{/each}}
 	</body>
 

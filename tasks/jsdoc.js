@@ -20,7 +20,7 @@ function task(options) {
 	var name = options.name ? options.name : "jsdoc";
 	var src = options.src ? options.src : "./**/*.js";
 	var dest = options.dest ? options.dest : "./docs";
-	return gulp.task(name, function() {
+	return gulp.task(name, function(done) {
 		return gulp.src(src)
 			.pipe(jsdoc.parser())
 			.pipe(jsdoc.generator(dest, {

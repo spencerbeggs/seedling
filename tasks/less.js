@@ -48,7 +48,7 @@ function task(options) {
 	} else {
 		outputPath = "./";
 	}
-	return gulp.task(name, function() {
+	return gulp.task(name, function(done) {
 		var startTime;
 
 		var logger = {
@@ -84,9 +84,13 @@ function task(options) {
 				.pipe(gulp.dest(outputPath))
 				.on("end", function() {
 					logger.end(output);
-					browserSync.reload({
-						stream: true
-					});
+					if (config.app.not.dev) {
+						done();
+					} else {
+						browserSync.reload({
+							stream: true
+						});
+					}
 				});
 		}
 

@@ -15,4 +15,5 @@ public/css/*
 public/js/*
 npm-debug.log
 .env
-docs
+.sass-cache
+.gulp-scss-cache

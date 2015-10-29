@@ -4,7 +4,7 @@ var gutil = require("gulp-util");
 var path = require("path");
 var env = require("node-env-file");
 try {
-	var envFilePath = __dirname + "/.env";
+	var envFilePath = path.join(__dirname, "/.env");
 	env(process.env.ENV_FILE || envFilePath);
 	gutil.log("[GULP] Loaded enviornment variables from " + envFilePath);
 } catch (err) {
@@ -15,20 +15,21 @@ var pjson = require("./package.json");
 process.env.APP_VERSION = pjson.version;
 var tasks = require("./tasks");
 
-global._gulpTaskNames = [];
+global.gulpTaskNames = [];
+global.gulpZoneNames = [];
 
 tasks.nodemon({
 	start: "lib/index.js",
 	watch: [
-		"**/*.js",
-		"templates/**/*.hbs"
+	"**/*.js",
+	"templates/**/*.hbs"
 	],
 	ignore: [
-		"app/**/*.js",
-		"public/**/*.js",
-		"tasks/**/*.js",
-		"node_modules/**",
-		"bower_components/**"
+	"app/**/*.js",
+	"public/**/*.js",
+	"tasks/**/*.js",
+	"node_modules/**",
+	"bower_components/**"
 	]
 });
 
@@ -39,7 +40,7 @@ tasks.beautifyCSS({
 });
 
 tasks.json({
-	src: ["package.json", ".jshintrc", ".jsbeautifyrc"]
+	src: ["./package.json", "./.jshintrc", "./.jsbeautifyrc", "./.eslintrc"]
 });
 
 tasks.jshint({
@@ -59,10 +60,16 @@ tasks.zone({
 	css: "./styles/less/above-the-fold.less"
 });
 
+// tasks.zone({
+// 	name: "default",
+// 	js: "./app/default.js",
+// 	css: "./styles/less/default.less"
+// });
+
 tasks.zone({
-	name: "default",
-	js: "./app/default.js",
-	css: "./styles/less/default.less"
+	name: "seedling",
+	js: "./app/app.jsx",
+	css: "./styles/scss/app.scss"
 });
 
 tasks.aws({
@@ -76,8 +83,8 @@ gulp.task("beautify", gulp.series(["beautify-less"]));
 
 gulp.task("test", gulp.series(gulp.series(["jshint"])));
 
-gulp.task("dev", gulp.series(gulp.parallel(["above-the-fold", "default"]), "nodemon", "browser-sync"));
+gulp.task("dev", gulp.series(gulp.parallel(global.gulpZoneNames), "nodemon", "browser-sync"));
 
-gulp.task("build", gulp.parallel("above-the-fold", "default", "jsdoc"));
+gulp.task("build", gulp.parallel(global.gulpZoneNames));
 
 gulp.task("aws", gulp.series("build", "aws"));

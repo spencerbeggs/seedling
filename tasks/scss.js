@@ -1,12 +1,16 @@
 "use strict";
-var gulp = require("gulp");
-var config = require("../config");
-var scss = require("gulp-scss");
 var browserSync = require("browser-sync");
+var buffer = require("vinyl-buffer");
+var config = require("../config");
+var gulp = require("gulp");
+var gulpif = require("gulp-if");
 var gutil = require("gulp-util");
+var minifyCSS = require("gulp-minify-css");
 var prettyHrtime = require("pretty-hrtime");
-var sourcemaps = require("gulp-sourcemaps");
 var rename = require("gulp-rename");
+var scss = require("gulp-sass");
+var source = require("vinyl-source-stream");
+var sourcemaps = require("gulp-sourcemaps");
 var watch = require("gulp-watch");
 
 /**
@@ -42,7 +46,7 @@ function task(options) {
 	} else {
 		outputPath = "./";
 	}
-	return gulp.task(name, function() {
+	return gulp.task(name, function(done) {
 		var startTime;
 
 		var logger = {
@@ -62,18 +66,27 @@ function task(options) {
 		function rebundle() {
 			logger.start(output);
 			return gulp.src(options.src)
-				.pipe(sourcemaps.init())
+				.pipe(gulpif(config.app.not.production, sourcemaps.init({
+					loadMaps: true
+				})))
 				.pipe(scss())
+				.pipe(gulpif(config.app.is.production, minifyCSS({
+					keepSpecialComments: 0
+				})))
 				.pipe(rename(function(path) {
-					path.basename = filename;
+					path.basename = output.replace(".css", "");
 				}))
-				.pipe(sourcemaps.write("./"))
+				.pipe(gulpif(config.app.not.production, sourcemaps.write("./")))
 				.pipe(gulp.dest(outputPath))
 				.on("end", function() {
 					logger.end(output);
-					browserSync.reload({
-						stream: true
-					});
+					if (config.app.not.dev) {
+						done();
+					} else {
+						browserSync.reload({
+							stream: true
+						});
+					}
 				});
 		}
 

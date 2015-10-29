@@ -11,9 +11,9 @@ module.exports = function(req, res, next) {
 		head: [],
 		body: []
 	};
-	res.locals.css.head.push({
-		url: "/css/above-the-fold.css",
-		async: true
-	});
+	// res.locals.css.head.push({
+	// 	url: "/css/above-the-fold.css",
+	// 	async: true
+	// });
 	next();
 };

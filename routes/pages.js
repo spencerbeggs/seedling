@@ -12,11 +12,8 @@ router.get("/", function(req, res, next) {
 	res.locals.css.head.push({
 		url: "/css/seedling.css",
 	});
-	res.locals.css.head.push({
-		url: "/css/default.css",
-	});
 	res.locals.js.body.push({
-		url: "/js/default.js",
+		url: "/js/seedling.js",
 		async: true
 	});
 	next();

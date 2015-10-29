@@ -4,7 +4,6 @@ var config = require("../config");
 var browserify = require("./browserify");
 var less = require("./less");
 var scss = require("./scss");
-var _ = require("lodash");
 
 /**
  * @module tasks/zone
@@ -52,38 +51,41 @@ function task(options) {
 		if (typeof options.css === "string") {
 			options.css = [options.css];
 		}
-		console.log(options.css);
 
-		options.css.forEach(function(file) {
-			var baseName, taskName;
-			let fileArr = file.split("/");
-			let filename = fileArr[fileArr.length - 1];
-			let fileBase = filename.split(".")[0];
-			if (options.css.length > 1) {
-				baseName = options.name + "-" + fileBase;
-			} else {
-				baseName = options.name;
-			}
-			if (file.includes(".less")) {
-				taskName = baseName + "-less";
-				less({
-					name: taskName,
-					src: file,
-					dest: "public/css/" + baseName + suffix + ".css"
-				});
-			} else if (file.includes(".scss")) {
-				taskName = baseName + "-scss";
-				scss({
-					name: taskName,
-					src: file,
-					dest: "public/css/" + baseName + suffix + ".css"
-				});
-			}
-			devTasks.push(taskName);
-		});
-
+		options
+			.css
+			.forEach(function(file) {
+				var baseName,
+					taskName;
+				let fileArr = file.split("/");
+				let filename = fileArr[fileArr.length - 1];
+				let fileBase = filename.split(".")[0];
+				if (options.css.length > 1) {
+					baseName = options.name + "-" + fileBase;
+				} else {
+					baseName = options.name;
+				}
+				if (file.includes(".less")) {
+					taskName = baseName + "-less";
+					less({
+						name: taskName,
+						src: file,
+						dest: "public/css/" + baseName + suffix + ".css"
+					});
+				} else if (file.includes(".scss")) {
+					taskName = baseName + "-scss";
+					scss({
+						name: taskName,
+						src: file,
+						dest: "public/css/" + baseName + suffix + ".css"
+					});
+				}
+				devTasks.push(taskName);
+			});
 	}
 	gulp.task(options.name, gulp.parallel(devTasks));
+	global.gulpZoneNames
+		.push(options.name);
 }
 
 module.exports = task;

@@ -3,6 +3,7 @@ var browserify = require("browserify");
 var browserSync = require("browser-sync");
 var buffer = require("vinyl-buffer");
 var config = require("../config");
+var data = require("browserify-data");
 var envify = require("envify/custom");
 var gulp = require("gulp");
 var gulpif = require("gulp-if");
@@ -53,7 +54,7 @@ function task(options) {
 	if (!options.dest) {
 		throw new Error("You must specify an output.");
 	}
-	return gulp.task(name, function() {
+	return gulp.task(name, function(done) {
 		function rebundle(changes) {
 			if (changes) {
 				gutil.log("[browserify] Changed: " + changes.join(", "));
@@ -84,7 +85,11 @@ function task(options) {
 					var taskTime = process.hrtime(startTime);
 					var prettyTime = prettyHrtime(taskTime);
 					gutil.log("[browserify] Bundled", gutil.colors.green(output), "in", gutil.colors.magenta(prettyTime));
-					browserSync.reload();
+					if (process.env.BROWSERIFY) {
+						done();
+					} else {
+						browserSync.reload();
+					}
 				});
 		}
 
@@ -95,10 +100,10 @@ function task(options) {
 		};
 		var opts = Object.assign({}, watchify.args, customOpts);
 		var bundler = watchify(browserify(opts));
+		bundler.transform(data);
 		bundler.transform(envify({
 			BROWSERIFY: "true"
 		}));
-
 		bundler.on("update", rebundle); // on any dep update, runs the bundler
 		bundler.on("log", gutil.log); // output build logs to terminal
 		return rebundle();
