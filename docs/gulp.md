@@ -18,7 +18,7 @@ You can check the location of the Gulp and versions of both global and local mod
 which gulp && gulp --version
 ```
 
-To keep the API for the project simple, any major tasks such as building, deploying and releasing should be exposed as an npm script in `[package.json](../package.json)` with the local Gulp runtime explicitly declared, eg:
+To keep the API for the project simple, any major tasks such as building, deploying and releasing should be exposed as an npm script in [package.json](../package.json) with the local Gulp runtime explicitly declared, eg:
 
 ```json
 {
