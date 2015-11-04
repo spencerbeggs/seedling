@@ -10,13 +10,6 @@ router.get("/", function (req, res, next) {
 	};
 	res.locals.pageId = "home";
 	res.locals.template = "pages/home";
-	res.locals.css.head.push({
-		url: "/css/seedling.css"
-	});
-	res.locals.js.body.push({
-		url: "/js/seedling.js",
-		async: true
-	});
 	next();
 });
 
@@ -26,7 +19,7 @@ router.get("/react", function (req, res, next) {
 		description: "This is a react app."
 	};
 	res.locals.pageId = "react";
-	res.locals.template = "pages/home";
+	res.locals.template = "pages/react";
 	res.locals.css.head.push({
 		url: "/css/react.css"
 	});

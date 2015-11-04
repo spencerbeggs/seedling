@@ -107,7 +107,10 @@ function task(options) {
 		bundler.transform("babelify", {presets: ["es2015", "react"]});
 		bundler.transform(envify({
 			BROWSERIFY: "true"
-		})); bundler.on("update", rebundle); bundler.on("log", gutil.log); return rebundle();
+		}));
+		bundler.on("update", rebundle);
+		bundler.on("log", gutil.log);
+		return rebundle();
 	});
 }
 

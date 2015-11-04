@@ -3,7 +3,9 @@ var ReactDOM = require("react-dom");
 var data = require("./data.yml");
 var _ = require("lodash");
 console.log(data);
+var config = require("config");
 var Page = require("./components/page.jsx");
+console.log(config);
 
 class App extends React.Component {
 	constructor (props = {}) {

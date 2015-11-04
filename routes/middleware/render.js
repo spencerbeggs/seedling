@@ -1,5 +1,13 @@
 "use strict";
-var pjson = require("../../package.json");
+var version;
+var shrinkwrap = require("../../npm-shrinkwrap.json") || {};
+
+if (shrinkwrap.dependencies) {
+	version = shrinkwrap.dependencies["browser-sync"].version;
+} else {
+	version = require("../../package.json").replace("^", "");
+}
+
 var config = require("../../config");
 var minify = require("html-minifier").minify;
 var html = require("html");
@@ -7,6 +15,7 @@ var html = require("html");
 function fullUrls(file) {
 	if (!file.processed) {
 		var suffix = "-" + config.app.version;
+
 		if (config.env !== "development") {
 			suffix += ".min";
 		}
@@ -21,10 +30,10 @@ function fullUrls(file) {
 	}
 }
 
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
 	if (config.env === "development") {
 		res.locals.js.body.push({
-			url: config.app.protocol + "://localhost:5000/browser-sync/browser-sync-client." + pjson.devDependencies["browser-sync"].replace("^", "") + ".js",
+			url: config.app.protocol + "://localhost:5000/browser-sync/browser-sync-client." + version + ".js",
 			async: true
 		});
 	}
@@ -39,12 +48,13 @@ module.exports = function(req, res, next) {
 			helpers: {
 
 			}
-		}, function(err, htmlText) {
+		}, function (err, htmlText) {
 			if (err) {
 				console.log(err);
 			}
 
 			var output;
+
 			if (config.env !== "development") {
 				output = minify(htmlText, {
 					collapseWhitespace: true,
@@ -53,8 +63,8 @@ module.exports = function(req, res, next) {
 				});
 			} else {
 				output = html.prettyPrint(htmlText, {
-					"indent_size": 4,
-					"max_char": 0
+					indent_size: 4,
+					max_char: 0
 				});
 			}
 
