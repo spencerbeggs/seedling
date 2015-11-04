@@ -3,6 +3,7 @@ var gulp = require("gulp");
 var gutil = require("gulp-util");
 var path = require("path");
 var env = require("node-env-file");
+
 try {
 	var envFilePath = path.join(__dirname, "/.env");
 	env(process.env.ENV_FILE || envFilePath);
@@ -11,6 +12,7 @@ try {
 	console.log(err);
 	gutil.log("[WARNING] No .env file found");
 }
+
 var pjson = require("./package.json");
 process.env.APP_VERSION = pjson.version;
 var tasks = require("./tasks");
@@ -40,36 +42,31 @@ tasks.beautifyCSS({
 });
 
 tasks.json({
-	src: ["./package.json", "./.jshintrc", "./.jsbeautifyrc", "./.eslintrc"]
+	src: ["package.json", ".jsbeautifyrc", ".jscsrc", ".eslintrc"]
 });
 
-tasks.jshint({
-	src: ["./app/**/*.js", "./config/**/*.js", "./lib/**/*.js", "./routes/**/*.js", "./tasks/**/*.js"]
-});
+// tasks.eslint({
+// 	src: ["./app/**/*.js", "./config/**/*.js", "./lib/**/*.js", "./routes/**/*.js", "./tasks/**/*.js"]
+// });
 
 tasks.browserSync({
 	src: ["public/css/**/*.css", "./public/js/**/*.js"]
 });
 
-tasks.jsdoc({
+tasks.esdoc({
 	src: ["./config/**/*.js", "./tasks/*.js"]
 });
 
 tasks.zone({
-	name: "above-the-fold",
-	css: "./styles/less/above-the-fold.less"
+	name: "jquery",
+	js: "./app/jquery/app.js",
+	css: "./styles/jquery/app.less"
 });
 
-// tasks.zone({
-// 	name: "default",
-// 	js: "./app/default.js",
-// 	css: "./styles/less/default.less"
-// });
-
 tasks.zone({
-	name: "seedling",
-	js: "./app/app.jsx",
-	css: "./styles/scss/app.scss"
+	name: "react",
+	js: "./app/react/app.jsx",
+	css: "./styles/react/app.scss"
 });
 
 tasks.aws({
@@ -79,9 +76,13 @@ tasks.aws({
 	}]
 });
 
+tasks.jscs({
+	src: ["./**/js", "./**/jsx"]
+});
+
 gulp.task("beautify", gulp.series(["beautify-less"]));
 
-gulp.task("test", gulp.series(gulp.series(["jshint"])));
+gulp.task("test", gulp.series(gulp.series(["jscs"])));
 
 gulp.task("dev", gulp.series(gulp.parallel(global.gulpZoneNames), "nodemon", "browser-sync"));
 

@@ -1,6 +1,7 @@
 "use strict";
 var gulp = require("gulp");
-var beautify = require("gulp-jsbeautifier");
+var esformatter = require("gulp-esformatter");
+var pkg = require("../package.json");
 
 /**
  * @module tasks/beautify
@@ -15,13 +16,12 @@ var beautify = require("gulp-jsbeautifier");
  * @return {Function}
  */
 function task(options) {
-	options = options || {};
-	var name = options.name ? options.name : "beautify";
+	options = options || {}; var name = options.name ? options.name : "beautify";
 	var config = options.config ? options.config : {};
 	var dest = options.dest ? options.dest : "./";
-	gulp.task(name, function() {
+	gulp.task(name, function () {
 		return gulp.src(options.src)
-			.pipe(beautify(config))
+			.pipe(esformatter(pkg.esformatter))
 			.pipe(gulp.dest(dest));
 	});
 }

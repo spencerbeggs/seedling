@@ -1,9 +1,9 @@
 "use strict";
 var config = require("../config");
-var jsdoc = require("gulp-jsdoc");
+var esdoc = require("gulp-esdoc");
 var gulp = require("gulp");
 /**
- * @module tasks/jsdoc
+ * @module tasks/esdoc
  * @description Factory function that sets up a new [Gulp JSDoc]{@link https://github.com/jsBoot/gulp-jsdoc} task to build documentation.
  */
 
@@ -16,25 +16,15 @@ var gulp = require("gulp");
  * @return {Function}
  */
 function task(options) {
-	options = options || {};
-	var name = options.name ? options.name : "jsdoc";
+	options = options || {}; var name = options.name ? options.name : "jsdoc";
 	var src = options.src ? options.src : "./**/*.js";
-	var dest = options.dest ? options.dest : "./docs";
-	return gulp.task(name, function(done) {
+	var dest = options.dest ? options.dest : "./jsdoc";
+	return gulp.task(name, function (done) {
 		return gulp.src(src)
-			.pipe(jsdoc.parser())
-			.pipe(jsdoc.generator(dest, {
-				path: "ink-docstrap",
-				systemName: config.app.name + " Documentation",
-				footer: "Something",
-				copyright: "Something",
-				navType: "vertical",
-				theme: "cerulean",
-				linenums: true,
-				collapseSymbols: false,
-				inverseNav: false,
-				plugins: ["plugins/markdown", "plugins/summarize"]
+			.pipe(esdoc({
+				destination: dest
 			}));
+		done();
 	});
 }
 

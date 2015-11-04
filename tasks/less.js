@@ -6,13 +6,13 @@ var gulpif = require("gulp-if");
 var gutil = require("gulp-util");
 var less = require("gulp-less");
 var minifyCSS = require("gulp-minify-css");
-var prefixer = require("less-plugin-autoprefix");
+var Prefixer = require("less-plugin-autoprefix");
 var prettyHrtime = require("pretty-hrtime");
 var rename = require("gulp-rename");
 var sourcemaps = require("gulp-sourcemaps");
 var watch = require("gulp-watch");
 
-var autoprefixer = new prefixer({
+var autoprefixer = new Prefixer({
 	browsers: ["last 3 versions"]
 });
 /**
@@ -28,46 +28,49 @@ var autoprefixer = new prefixer({
  * @return {Function}
  */
 function task(options) {
-	options = options || {};
-	var name = options.name ? options.name : "less";
+	options = options || {}; var name = options.name ? options.name : "less";
 	var dest = options.dest ? options.dest : "./";
 	var arr = dest.split("/");
-	var output, outputPath;
+	var output;
+	var outputPath;
+
 	if (typeof options.src === "string") {
 		options.src = [options.src];
 	}
+
 	if (arr[arr.length - 1] !== "") {
 		var outputArr = arr[arr.length - 1].split(".");
 		output = outputArr.join(".");
 	} else {
 		output = dest;
 	}
+
 	if (arr.length > 1) {
 		arr.pop();
 		outputPath = arr.join("/");
 	} else {
 		outputPath = "./";
 	}
-	return gulp.task(name, function(done) {
-		var startTime;
 
+	return gulp.task(name, function (done) {
+		var startTime;
 		var logger = {
-			start: function() {
+			start: function () {
 				startTime = process.hrtime();
 			},
-			end: function(filepath) {
+
+			end: function (filepath) {
 				var taskTime = process.hrtime(startTime);
 				var prettyTime = prettyHrtime(taskTime);
 				gutil.log("[less] Bundled", gutil.colors.green(filepath), "in", gutil.colors.magenta(prettyTime));
 			},
-			error: function(err) {
+
+			error: function (err) {
 				gutil.log(err);
 			}
 		};
-
 		function rebundle() {
-			logger.start(output);
-			return gulp.src(options.src)
+			logger.start(output); return gulp.src(options.src)
 				.pipe(gulpif(config.app.not.production, sourcemaps.init({
 					loadMaps: true
 				})))
@@ -77,13 +80,14 @@ function task(options) {
 				.pipe(gulpif(config.app.is.production, minifyCSS({
 					keepSpecialComments: 0
 				})))
-				.pipe(rename(function(path) {
+				.pipe(rename(function (path) {
 					path.basename = output.replace(".css", "");
 				}))
 				.pipe(gulpif(config.app.not.production, sourcemaps.write("./")))
 				.pipe(gulp.dest(outputPath))
-				.on("end", function() {
+				.on("end", function () {
 					logger.end(output);
+
 					if (config.app.not.dev) {
 						done();
 					} else {
@@ -94,9 +98,7 @@ function task(options) {
 				});
 		}
 
-		watch(options.src, rebundle);
-		return rebundle();
-
+		watch(options.src, rebundle); return rebundle();
 	});
 }
 

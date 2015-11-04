@@ -9,11 +9,10 @@ var moment = require("moment");
  * @description Factory function that sets up a new [BrowserSync]{@link http://www.browsersync.io/} task.
  */
 
-//** Returns a formatted timestamp */
+/** Returns a formatted timestamp */
 function timestamp() {
 	return "[" + moment(Date.now()).format("H:mm:ss").grey + "] [browser-sync] ";
 }
-
 
 /**
  * @param {Object} options - Task options.
@@ -23,12 +22,10 @@ function timestamp() {
  * @return {Function}
  */
 function task(options) {
-	options = options || {};
-	var name = options.name ? options.name : "browser-sync";
+	options = options || {}; var name = options.name ? options.name : "browser-sync";
 	var port = options.port ? options.port : 5000;
-	return gulp.task(name, function() {
+	return gulp.task(name, function () {
 		var bs = browserSync.create();
-
 		bs.init({
 			files: options.src,
 			open: false,
@@ -44,6 +41,5 @@ function task(options) {
 		});
 	});
 }
-
 
 module.exports = task;

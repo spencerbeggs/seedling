@@ -19,7 +19,7 @@
  * @borrows module:tasks/browserify~task as browserify
  * @borrows module:tasks/browserSync~task as browserSync
  * @borrows module:tasks/jsdoc~task as jsdoc
- * @borrows module:tasks/jshint~task as jshint
+ * @borrows module:tasks/eslint~task as jshint
  * @borrows module:tasks/json~task as json
  * @borrows module:tasks/less~task as less
  * @borrows module:tasks/nodemon~task as nodemon
@@ -32,8 +32,9 @@ module.exports.beautify = require("./beautify");
 module.exports.beautifyCSS = require("./beautify-css");
 module.exports.browserify = require("./browserify");
 module.exports.browserSync = require("./browser-sync");
-module.exports.jsdoc = require("./jsdoc");
-module.exports.jshint = require("./jshint");
+module.exports.eslint = require("./eslint");
+module.exports.esdoc = require("./esdoc");
+module.exports.jscs = require("./jscs");
 module.exports.json = require("./json");
 module.exports.less = require("./less");
 module.exports.nodemon = require("./nodemon");

@@ -1,5 +1,4 @@
 "use strict";
-
 /**
  * @module config/private
  * @desc An object that sets and calculates configurations settings that can should not be exposed in public-facing compiled JavaScript.

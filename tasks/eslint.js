@@ -1,7 +1,6 @@
 "use strict";
 var gulp = require("gulp");
-var jshint = require("gulp-jshint");
-require("jshint-stylish");
+var eslint = require("gulp-eslint");
 
 /**
  * @module tasks/jshint
@@ -18,12 +17,10 @@ require("jshint-stylish");
 
 function task(options) {
 	options = options || {};
-	var name = options.name ? options.name : "jshint";
-	var reporter = options.reporter ? options.reporter : "jshint-stylish";
-	return gulp.task(name, function(callback) {
+	var name = options.name ? options.name : "eslint";
+	return gulp.task(name, function (callback) {
 		gulp.src(options.src)
-			.pipe(jshint())
-			.pipe(jshint.reporter(reporter));
+			.pipe(eslint());
 		callback();
 	});
 }

@@ -1,4 +1,4 @@
-# Gulp
+# Gulp Tasks
 
 This project uses the upcoming 4.0 branch of [Gulp](https://github.com/gulpjs/gulp) to run many tasks. To run this project's Gulp tasks from the command-line, you either need to install 4.0 branch globally as well:
 

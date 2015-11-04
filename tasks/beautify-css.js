@@ -23,6 +23,7 @@ function task(options) {
 	options = options || {};
 	options.lang = "css";
 	options.mode = "beautify";
+
 	if (_.has(conf, "preserve_newlines")) {
 		if (conf.preserve_newlines) {
 			options.preserve = "css";
@@ -32,6 +33,7 @@ function task(options) {
 	} else {
 		options.preserve = "css";
 	}
+
 	if (_.has(conf, "selector_separator_newline")) {
 		if (conf.selector_separator_newline) {
 			options.vertical = "css";
@@ -41,12 +43,12 @@ function task(options) {
 	} else {
 		options.vertical = "css";
 	}
+
 	options.inchar = _.has(conf, "indent_char") ? String(conf.indent_char) : " ";
 	options.insize = _.has(conf, "indent_size") ? Number(conf.indent_size) : 4;
-	options.cssinsertlines = _.has(conf, "newline_between_rules") ? Boolean(conf.newline_between_rules) : false;
-	var name = options.name ? options.name : "beautify-css";
+	options.cssinsertlines = _.has(conf, "newline_between_rules") ? Boolean(conf.newline_between_rules) : false; var name = options.name ? options.name : "beautify-css";
 	var dest = options.dest ? options.dest : "./";
-	gulp.task(name, function() {
+	gulp.task(name, function () {
 		return gulp.src(options.src)
 			.pipe(prettydiff(options))
 			.pipe(gulp.dest(dest));

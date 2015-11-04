@@ -10,11 +10,13 @@ function fullUrls(file) {
 		if (config.env !== "development") {
 			suffix += ".min";
 		}
+
 		if (file.url.startsWith("/")) {
 			let arr = file.url.split(".");
 			arr[arr.length - 2] = arr[arr.length - 2] + suffix;
 			file.url = arr.join(".");
 		}
+
 		file.processed = true;
 	}
 }
@@ -26,6 +28,7 @@ module.exports = function(req, res, next) {
 			async: true
 		});
 	}
+
 	res.locals.js.head.forEach(fullUrls);
 	res.locals.js.body.forEach(fullUrls);
 	res.locals.css.head.forEach(fullUrls);
@@ -40,6 +43,7 @@ module.exports = function(req, res, next) {
 			if (err) {
 				console.log(err);
 			}
+
 			var output;
 			if (config.env !== "development") {
 				output = minify(htmlText, {
@@ -49,8 +53,8 @@ module.exports = function(req, res, next) {
 				});
 			} else {
 				output = html.prettyPrint(htmlText, {
-					indent_size: 4,
-					max_char: 0
+					"indent_size": 4,
+					"max_char": 0
 				});
 			}
 
