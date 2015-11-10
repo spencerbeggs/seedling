@@ -4,14 +4,29 @@ import {Link} from "react-router";
 class App extends Component {
 	render () {
 		return (
-			<div>
-				<h1>App</h1>
-				<ul>
-					<li><Link to="/splash">Splash</Link></li>
-					<li><Link to="/summary">Summary</Link></li>
-				</ul>
-				{this.props.children}
-			</div>
+			<section id="app">
+				<header className="navbar navbar-fixed-top navbar-light bg-faded">
+					<nav>
+						<ul className="nav nav-pills">
+							<li className="nav-item">
+								<Link to="/">Home</Link>
+							</li>
+							<li className="nav-item">
+								<Link to="/summary">Summary</Link>
+							</li>
+							<li className="nav-item">
+								<Link to="/splash">Splash</Link>
+							</li>
+						</ul>
+					</nav>
+				</header>
+				<section id="content">
+					{this.props.children}
+				</section>
+				<footer>
+
+				</footer>
+			</section>
 		);
 	}
 }

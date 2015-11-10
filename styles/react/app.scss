@@ -15,6 +15,26 @@ form {
 	min-height: 100vh;
 }
 
+#app {
+	min-height: 100vh;
+	min-width: 100vw;
+	> header {
+		background-color: rgba(0, 0, 0, .5);
+		height: 3rem;
+		> nav {
+			@extend .container;
+		}
+	}
+	#content {
+		@extend .container;
+		padding-top: 3rem;
+		background-color: gray;
+		min-height: 100vh;
+	}
+}
+
+
+
 .sk-fading-circle {
   margin: 100px auto;
   width: 40px;

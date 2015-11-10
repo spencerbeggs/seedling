@@ -115,6 +115,11 @@ function task(options) {
 				"stage-0",
 				"react",
 				"es2015"
+			],
+			plugins: [
+				"transform-class-properties",
+				"transform-flow-strip-types",
+				"transform-object-rest-spread"
 			]
 		});
 		bundler.transform(envify(Object.assign({}, process.env, {

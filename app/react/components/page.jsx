@@ -12,9 +12,6 @@ let Pages = {
 class Page extends Component {
 	constructor (props) {
 		super(props);
-		this.state = Pages[props.params.slug] || {
-			title: "Not found"
-		};
 	}
 
 	componentDidMount () {
@@ -24,7 +21,7 @@ class Page extends Component {
 	render () {
 		return (
 		<section>
-			<h1>{Pages[this.props.params.slug].title}</h1>
+			<h1>{this.props.params.slug ? Pages[this.props.params.slug].title : "Home"}</h1>
 		</section>);
 	}
 }
