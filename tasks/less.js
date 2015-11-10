@@ -6,6 +6,7 @@ var gulpif = require("gulp-if");
 var gutil = require("gulp-util");
 var less = require("gulp-less");
 var minifyCSS = require("gulp-minify-css");
+var plumber = require("gulp-plumber");
 var Prefixer = require("less-plugin-autoprefix");
 var prettyHrtime = require("pretty-hrtime");
 var rename = require("gulp-rename");
@@ -70,7 +71,9 @@ function task(options) {
 			}
 		};
 		function rebundle() {
-			logger.start(output); return gulp.src(options.src)
+			logger.start(output);
+			return gulp.src(options.src)
+				.pipe(plumber())
 				.pipe(gulpif(config.app.not.production, sourcemaps.init({
 					loadMaps: true
 				})))
@@ -84,6 +87,7 @@ function task(options) {
 					path.basename = output.replace(".css", "");
 				}))
 				.pipe(gulpif(config.app.not.production, sourcemaps.write("./")))
+				.pipe(plumber.stop())
 				.pipe(gulp.dest(outputPath))
 				.on("end", function () {
 					logger.end(output);
@@ -98,7 +102,11 @@ function task(options) {
 				});
 		}
 
-		watch(options.src, rebundle); return rebundle();
+		if (config.app.is.dev) {
+			watch(options.src, rebundle);
+		}
+
+		return rebundle();
 	});
 }
 

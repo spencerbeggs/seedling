@@ -13,8 +13,7 @@ try {
 	gutil.log("[WARNING] No .env file found");
 }
 
-var pjson = require("./package.json");
-process.env.APP_VERSION = pjson.version;
+process.env.APP_VERSION = process.env.npm_package_version || "unknown";
 var tasks = require("./tasks");
 
 global.gulpTaskNames = [];

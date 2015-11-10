@@ -10,7 +10,7 @@
  * @type {string}
  * @default unknown
  */
-module.exports.env = process.env.NODE_ENV_OVERRIDE || process.env.NODE_ENV || "unknown";
+module.exports.env = process.env.NODE_ENV || "unknown";
 
 /** Contains config information about the application itself.
  * @type {object}

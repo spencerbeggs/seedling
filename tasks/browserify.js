@@ -1,7 +1,6 @@
 "use strict";
 var browserify = require("browserify");
 var browserSync = require("browser-sync");
-var reactify = require("reactify");
 var babelify = require("babelify");
 var buffer = require("vinyl-buffer");
 var config = require("../config");
@@ -85,13 +84,14 @@ function task(options) {
 				})))
 				.pipe(gulpif(config.app.is.production, uglify()))
 				.pipe(gulpif(config.app.not.production, sourcemaps.write("./")))
+
 				.pipe(gulp.dest(outputPath))
 				.on("end", function () {
 					var taskTime = process.hrtime(startTime);
 					var prettyTime = prettyHrtime(taskTime);
 					gutil.log("[browserify] Bundled", gutil.colors.green(output), "in", gutil.colors.magenta(prettyTime));
 
-					if (process.env.BROWSERIFY) {
+					if (config.app.not.dev) {
 						done();
 					} else {
 						browserSync.reload();
@@ -99,23 +99,27 @@ function task(options) {
 				});
 		}
 
-		var customOpts = {
+		var opts = Object.assign(config.app.is.dev ? watchify.args : {}, {
 			entries: options.src,
-			debug: true
-		};
-		var opts = Object.assign({}, watchify.args, customOpts);
-		var bundler = watchify(browserify(opts));
+			debug: config.app.not.prod
+		});
+		var bundler = browserify(opts);
+
+		if (config.app.is.dev) {
+			bundler = watchify(bundler);
+		}
+
 		bundler.transform(data);
-		bundler.transform(reactify, {
-			global: true,
-			ignore: [
-				"**/node_modules/react-router/node_modules/when/**"
+		bundler.transform(babelify, {
+			presets: [
+				"stage-0",
+				"react",
+				"es2015"
 			]
 		});
-		bundler.transform(babelify, {presets: ["stage-0", "react", "es2015"]});
-		bundler.transform(envify({
+		bundler.transform(envify(Object.assign({}, process.env, {
 			BROWSERIFY: "true"
-		}));
+		})));
 		bundler.on("update", rebundle);
 		bundler.on("log", gutil.log);
 		return rebundle();

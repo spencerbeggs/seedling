@@ -68,7 +68,8 @@ function task(options) {
 			}
 		};
 		function rebundle() {
-			logger.start(output); return gulp.src(options.src)
+			logger.start(output);
+			return gulp.src(options.src)
 				.pipe(gulpif(config.app.not.production, sourcemaps.init({
 					loadMaps: true
 				})))
@@ -94,7 +95,11 @@ function task(options) {
 				});
 		}
 
-		watch(options.src, rebundle); return rebundle();
+		if (config.app.is.dev) {
+			watch(options.src, rebundle);
+		}
+
+		return rebundle();
 	});
 }
 

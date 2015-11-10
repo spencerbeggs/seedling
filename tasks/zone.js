@@ -102,8 +102,8 @@ function task(options) {
 			});
 	}
 
-	gulp.task(options.name, gulp.parallel(devTasks)); global.gulpZoneNames
-		.push(options.name);
+	gulp.task(options.name, gulp.parallel(devTasks));
+	global.gulpZoneNames.push(options.name);
 }
 
 module.exports = task;

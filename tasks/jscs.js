@@ -14,7 +14,13 @@ function task(options) {
 			.pipe(jscs({
 				fix: true
 			}))
-			.pipe(jscs.reporter());
+			.pipe(jscs.reporter())
+			.on("end", function (done) {
+				if (process.env.BROWSERIFY) {
+					done();
+				}
+			});
+
 		callback();
 	});
 }
