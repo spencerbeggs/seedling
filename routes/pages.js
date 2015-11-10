@@ -13,7 +13,7 @@ router.get("/", function (req, res, next) {
 	next();
 });
 
-router.get("/react", function (req, res, next) {
+router.get("/react/?*", function (req, res, next) {
 	res.locals.content = {
 		title: "React App",
 		description: "This is a react app."

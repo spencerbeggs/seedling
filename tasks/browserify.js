@@ -1,6 +1,8 @@
 "use strict";
 var browserify = require("browserify");
 var browserSync = require("browser-sync");
+var reactify = require("reactify");
+var babelify = require("babelify");
 var buffer = require("vinyl-buffer");
 var config = require("../config");
 var data = require("browserify-data");
@@ -104,7 +106,13 @@ function task(options) {
 		var opts = Object.assign({}, watchify.args, customOpts);
 		var bundler = watchify(browserify(opts));
 		bundler.transform(data);
-		bundler.transform("babelify", {presets: ["es2015", "react"]});
+		bundler.transform(reactify, {
+			global: true,
+			ignore: [
+				"**/node_modules/react-router/node_modules/when/**"
+			]
+		});
+		bundler.transform(babelify, {presets: ["stage-0", "react", "es2015"]});
 		bundler.transform(envify({
 			BROWSERIFY: "true"
 		}));

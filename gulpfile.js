@@ -65,7 +65,7 @@ tasks.zone({
 
 tasks.zone({
 	name: "react",
-	js: "./app/react/app.jsx",
+	js: "./app/react/index.jsx",
 	css: "./styles/react/app.scss"
 });
 

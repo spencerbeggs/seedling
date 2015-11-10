@@ -10,6 +10,11 @@ form {
     @extend .col-md-6;
 }
 
+#page {
+	@extend .container;
+	min-height: 100vh;
+}
+
 .sk-fading-circle {
   margin: 100px auto;
   width: 40px;

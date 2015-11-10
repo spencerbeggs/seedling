@@ -24,6 +24,7 @@
  * @borrows module:tasks/less~task as less
  * @borrows module:tasks/nodemon~task as nodemon
  * @borrows module:tasks/scss~task as scss
+ * @borrows module:tasks/webpack~task as webpack
  * @borrows module:tasks/zone~task as zone
  */
 
@@ -39,4 +40,5 @@ module.exports.json = require("./json");
 module.exports.less = require("./less");
 module.exports.nodemon = require("./nodemon");
 module.exports.scss = require("./scss");
+module.exports.webpack = require("./zone");
 module.exports.zone = require("./zone");

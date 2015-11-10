@@ -2,6 +2,7 @@
 var gulp = require("gulp");
 var config = require("../config");
 var browserify = require("./browserify");
+var webpack = require("./webpack");
 var less = require("./less");
 var scss = require("./scss");
 
@@ -40,8 +41,28 @@ function task(options) {
 			name: buildTaskName,
 			src: options.js,
 			dest: "./public/js/" + options.name + suffix + ".js"
-		}); buildTasks.push(buildTaskName);
+		});
+		buildTasks.push(buildTaskName);
 	}
+
+	// if (options.js) {
+	// let devTaskName = options.name + "-js";
+	// webpack({
+	// 	watch: true,
+	// 	name: devTaskName,
+	// 	src: options.js,
+	// 	dest: "./public/js/"
+	// });
+	// devTasks.push(devTaskName);
+
+	// let buildTaskName = options.name + "-js-build";
+	// browserify({
+	// 	name: buildTaskName,
+	// 	src: options.js,
+	// 	dest: "./public/js/" + options.name + suffix + ".js"
+	// });
+	// buildTasks.push(buildTaskName);
+	// }
 
 	if (options.css) {
 		if (typeof options.css === "string") {
