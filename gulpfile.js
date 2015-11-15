@@ -1,19 +1,9 @@
 "use strict";
+require("./config/load_env");
 var gulp = require("gulp");
 var gutil = require("gulp-util");
 var path = require("path");
-var env = require("node-env-file");
 
-try {
-	var envFilePath = path.join(__dirname, "/.env");
-	env(process.env.ENV_FILE || envFilePath);
-	gutil.log("[GULP] Loaded enviornment variables from " + envFilePath);
-} catch (err) {
-	console.log(err);
-	gutil.log("[WARNING] No .env file found");
-}
-
-process.env.APP_VERSION = process.env.npm_package_version || "unknown";
 var tasks = require("./tasks");
 
 global.gulpTaskNames = [];
@@ -79,9 +69,17 @@ tasks.jscs({
 	src: ["./**/js", "./**/jsx"]
 });
 
-gulp.task("beautify", gulp.series(["beautify-less"]));
+gulp.task("bootstrap-staging", function () {
+	BootstrapUsers();
+});
 
-gulp.task("test", gulp.series(gulp.series(["jscs"])));
+tasks.mocha({
+	src: "./test/**.js"
+});
+
+gulp.task("beautify", gulp.series(["json", "beautify-less"]));
+
+gulp.task("test", gulp.series(gulp.series(["jscs", "mocha"])));
 
 gulp.task("dev", gulp.series(gulp.parallel(global.gulpZoneNames), "nodemon", "browser-sync"));
 

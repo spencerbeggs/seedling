@@ -21,7 +21,9 @@
  * @borrows module:tasks/jsdoc~task as jsdoc
  * @borrows module:tasks/eslint~task as jshint
  * @borrows module:tasks/json~task as json
+ * @borrows module:tasks/lambda~task as lambda
  * @borrows module:tasks/less~task as less
+ * @borrows module:tasks/mocha~task as mocha
  * @borrows module:tasks/nodemon~task as nodemon
  * @borrows module:tasks/scss~task as scss
  * @borrows module:tasks/webpack~task as webpack
@@ -37,8 +39,11 @@ module.exports.eslint = require("./eslint");
 module.exports.esdoc = require("./esdoc");
 module.exports.jscs = require("./jscs");
 module.exports.json = require("./json");
+module.exports.lambda = require("./lambda");
 module.exports.less = require("./less");
+module.exports.mocha = require("./mocha");
 module.exports.nodemon = require("./nodemon");
 module.exports.scss = require("./scss");
-module.exports.webpack = require("./zone");
+module.exports.webpack = require("./webpack");
+module.exports.zip = require("./zip");
 module.exports.zone = require("./zone");

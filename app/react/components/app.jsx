@@ -17,6 +17,9 @@ class App extends Component {
 							<li className="nav-item">
 								<Link to="/splash">Splash</Link>
 							</li>
+							<li className="nav-item">
+								<Link to="/foo">Foo</Link>
+							</li>
 						</ul>
 					</nav>
 				</header>

@@ -38,6 +38,7 @@ module.exports.mongo = {
 module.exports.aws = {
 	key: process.env.AWS_KEY,
 	secret: process.env.AWS_SECRET,
+	region: process.env.AWS_REGION || "us-east-1",
 	staticBucket: process.env.AWS_STATIC_BUCKET
 };
 

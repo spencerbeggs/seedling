@@ -1,38 +1,38 @@
 import React, { Component, PropTypes } from "react";
-import PageStore from "../stores/pages";
-import * as PageActionCreators from "../actions/page";
+import UserStore from "../stores/user";
+import * as UserActionCreators from "../actions/user";
 
 /**
  * Requests data from server for current props.
  */
 function requestData(props) {
 	const {params} = props;
-	PageActionCreators.getBySlug(params.slug);
+	console.log(params);
+	UserActionCreators.getBySlug(params.slug);
 }
 
 /**
  * Retrieves state from stores for current props.
  */
 function getState(props) {
-	const content = PageStore.get(props.params.slug);
-	return {content};
+	const page = UserStore.get(props.params.slug);
+	return page;
 }
 
-@connectToStores([PageStore], getState)
-class Page extends Component {
+@connectToStores([UserStore], getState)
+class Profile extends Component {
 	static propTypes = {
 		// Injected by React Router:
 		params: PropTypes.shape({
-			slug: PropTypes.string
+			username: PropTypes.string.isRequired
 		}).isRequired,
 
 		// Injected by @connectToStores
-		content: PropTypes.object
+		page: PropTypes.object
 	}
 
 	componentWillMount () {
 		requestData(this.props);
-		this.state = getState(this.props);
 	}
 
 	componentWillReceiveProps (nextProps) {
@@ -40,17 +40,25 @@ class Page extends Component {
 	}
 
 	componentDidMount () {
-		console.log(this.state);
+		console.log(this);
 	}
 
 	render () {
-		console.log(this.props);
 		return (
 			<section>
-				<h1>{this.props.title}</h1>
+				<h1>{this.state.title}</h1>
 			</section>
 		);
 	}
 }
 
-export default Page;
+@connectToStores([UserStore], getState)
+class UserIndex extends Component {
+	render () {
+		return (
+			<h1>Users</h1>
+		);
+	}
+}
+
+export {Profile, UserIndex};
