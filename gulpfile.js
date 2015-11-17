@@ -5,7 +5,6 @@ var gutil = require("gulp-util");
 var path = require("path");
 
 var tasks = require("./tasks");
-
 global.gulpTaskNames = [];
 global.gulpZoneNames = [];
 
@@ -37,6 +36,10 @@ tasks.json({
 // tasks.eslint({
 // 	src: ["./app/**/*.js", "./config/**/*.js", "./lib/**/*.js", "./routes/**/*.js", "./tasks/**/*.js"]
 // });
+
+tasks.lambda({
+	name: "deploy-api"
+});
 
 tasks.browserSync({
 	src: ["public/css/**/*.css", "./public/js/**/*.js"]

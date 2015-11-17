@@ -17,3 +17,5 @@ npm-debug.log
 .env
 .sass-cache
 .gulp-scss-cache
+dist
+dist.zip

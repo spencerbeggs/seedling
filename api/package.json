@@ -1,0 +1,20 @@
+{
+  "name": "seedling-api",
+  "version": "1.0.0",
+  "description": "The Lambda function for the seedling API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "C. Spencer Beggs <spencer@beg.gs>",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.2.17",
+    "aws-sdk-promise": "0.0.2",
+    "express": "^4.13.3",
+    "gulp-util": "^3.0.7",
+    "lodash": "^3.10.1",
+    "node-env-file": "^0.1.8",
+    "oauth2orize": "^1.2.0"
+  }
+}

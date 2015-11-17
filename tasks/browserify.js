@@ -29,7 +29,8 @@ var watchify = require("watchify");
  * @return {Function}
  */
 function task(options) {
-	options = options || {}; var name = options.name ? options.name : "browserify";
+	options = options || {};
+	var name = options.name ? options.name : "browserify";
 	var dest = options.dest ? options.dest : "./";
 	var arr = dest.split("/");
 	var output;
@@ -103,6 +104,11 @@ function task(options) {
 			entries: options.src,
 			debug: config.app.not.prod
 		});
+
+		if (options.basedir) {
+			opts.basedir = options.basedir;
+		}
+
 		var bundler = browserify(opts);
 
 		if (config.app.is.dev) {
