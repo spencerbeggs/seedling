@@ -2,14 +2,17 @@
 var browserify = require("browserify");
 var browserSync = require("browser-sync");
 var babelify = require("babelify");
+var brfs = require("brfs");
 var buffer = require("vinyl-buffer");
 var config = require("../config");
 var data = require("browserify-data");
+var ejsify = require("ejsify");
 var envify = require("envify/custom");
 var gulp = require("gulp");
 var gulpif = require("gulp-if");
 var gutil = require("gulp-util");
 var notify = require("gulp-notify");
+var packageify = require("packageify");
 var prettyHrtime = require("pretty-hrtime");
 var source = require("vinyl-source-stream");
 var sourcemaps = require("gulp-sourcemaps");
@@ -115,6 +118,9 @@ function task(options) {
 			bundler = watchify(bundler);
 		}
 
+		bundler.transform("brfs");
+		bundler.transform("ejsify");
+		bundler.transform("packageify");
 		bundler.transform(data);
 		bundler.transform(babelify, {
 			presets: [
@@ -128,6 +134,7 @@ function task(options) {
 				"transform-object-rest-spread"
 			]
 		});
+		bundler.transform("packageify");
 		bundler.transform(envify(Object.assign({}, process.env, {
 			BROWSERIFY: "true"
 		})));

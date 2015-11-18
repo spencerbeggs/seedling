@@ -4,6 +4,7 @@ import {Router, Route, IndexRoute, Link, History} from "react-router";
 import history from "./components/history";
 import App from "./components/app.jsx";
 import Page from "./components/page.jsx";
+import Login from "./components/login.jsx";
 import {Profile, UserIndex} from "./components/user.jsx";
 
 // var data = require("./data.yml");
@@ -11,9 +12,9 @@ import {Profile, UserIndex} from "./components/user.jsx";
 var config = require("config");
 console.log("App started: %O", config);
 
-class Foo extends Component {
+class LoginPage extends Component {
 	render () {
-		<Page title="Foo" />;
+		<Login title="Foo" />;
 	}
 }
 
@@ -23,7 +24,7 @@ render((
 			<Route path="/users" component={UserIndex}>
 				<Route path=":username" component={Profile} />
 			</Route>
-			<Route path="/foo" component={Foo} />
+			<Route path="/login" component={Login} />
 			<Route path=":slug" component={Page} />
 			<IndexRoute component={Page} />
 		</Route>

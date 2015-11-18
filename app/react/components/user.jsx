@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import UserStore from "../stores/user";
-import * as UserActionCreators from "../actions/user";
+//import * as UserActionCreators from "../actions/user";
 
 /**
  * Requests data from server for current props.
