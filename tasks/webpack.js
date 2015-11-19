@@ -1,18 +1,39 @@
-var config = require("../config");
-var gulp = require("gulp");
-var webpack = require("webpack");
-var path = require("path");
-var gutil = require("gulp-util");
+const config = require("../config");
+const gulp = require("gulp");
+const webpack = require("webpack");
+const path = require("path");
+const gutil = require("gulp-util");
 
-var plugins = [new webpack.DefinePlugin({
-	"process.env": Object.keys(process.env).reduce(function (o, k) {
-		o[k] = JSON.stringify(process.env[k]);
-		return o;
-	}, {BROWSER: true})
-})];
+process.env.BROWSER = true;
+
+const plugins = [
+    new webpack.EnvironmentPlugin([
+        "BROWSER",
+      "NODE_ENV",
+      "APP_NAME",
+      "APP_SLUG",
+      "APP_PROTOCOL",
+      "APP_SUBDOMAIN",
+      "APP_DOMAIN",
+      "APP_PORT",
+      "npm_package_version"
+    ])
+];
 
 if (config.app.is.prod) {
-	plugins.push(new webpack.optimize.UglifyJsPlugin({minimize: true}));
+	plugins.push(new webpack.optimize.UglifyJsPlugin({
+		compress: {
+            screw_ie8: true,
+            keep_fnames: true,
+            warnings: false
+        },
+		mangle: {
+            screw_ie8: true,
+            keep_fnames: true
+        }
+	}),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin());
 }
 
 /**
@@ -28,8 +49,9 @@ if (config.app.is.prod) {
  * @return {Function}
  */
 
- function task(options) {
-	options = options || {}; var name = options.name ? options.name : "browserify";
+function task(options) {
+	options = options || {};
+	var name = options.name ? options.name : "browserify";
 	var dest = options.dest ? options.dest : "./";
 	var arr = dest.split("/");
 	var output;
@@ -64,8 +86,8 @@ if (config.app.is.prod) {
 	return gulp.task(name, function (done) {
 		webpack({
 			entry: [
-				"babel-polyfill",
-				options.src[0]
+			"babel-polyfill",
+			options.src[0]
 			],
 			output: {
 				filename: options.dest,
@@ -76,13 +98,6 @@ if (config.app.is.prod) {
 			plugins: plugins,
 			module: {
 				loaders: [{
-					loader: "transform?envify",
-					exclude: /(node_modules|bower_components)/,
-					test: /\.jsx?$/,
-					query: {
-						BROWSER: true
-					}
-				},{
 					loader: "babel-loader",
 
 					// Skip any files outside of your project's `src` directory
@@ -99,8 +114,8 @@ if (config.app.is.prod) {
 				}, {
 					test: /node_modules\/auth0-lock\/.*\.js$/,
 					loaders: [
-						"transform-loader/cacheable?brfs",
-						"transform-loader/cacheable?packageify"
+					"transform-loader/cacheable?brfs",
+					"transform-loader/cacheable?packageify"
 					]
 				}, {
 					test: /node_modules\/auth0-lock\/.*\.ejs$/,
@@ -116,7 +131,7 @@ if (config.app.is.prod) {
 			}
 
 			gutil.log("[webpack]", stats.toString({
-					// output options
+			// output options
 			}));
 			done();
 		});

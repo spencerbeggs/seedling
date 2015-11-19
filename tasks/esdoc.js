@@ -16,14 +16,15 @@ var gulp = require("gulp");
  * @return {Function}
  */
 function task(options) {
-	options = options || {}; var name = options.name ? options.name : "esdoc";
+	options = options || {};
+	var name = options.name ? options.name : "esdoc";
 	var src = options.src ? options.src : "./**/*.js";
 	var dest = options.dest ? options.dest : "./esdoc";
 	return gulp.task(name, function (done) {
 		return gulp.src(src)
-			.pipe(esdoc({
-				destination: dest
-			}));
+            .pipe(esdoc({
+	destination: dest
+            }));
 		done();
 	});
 }
