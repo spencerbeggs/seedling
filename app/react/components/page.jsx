@@ -9,7 +9,7 @@ function requestData(props) {
 	const {params} = props;
 	PageActionCreators.getBySlug(params.slug);
 }
-
+ 
 /**
  * Retrieves state from stores for current props.
  */
@@ -18,7 +18,7 @@ function getState(props) {
 	return {content};
 }
 
-@connectToStores([PageStore], getState)
+//@connectToStores([PageStore], getState)
 class Page extends Component {
 	static propTypes = {
 		// Injected by React Router:

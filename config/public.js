@@ -45,7 +45,7 @@ module.exports.app = {
 	subdomain: process.env.APP_SUBDOMAIN,
 	domain: process.env.APP_DOMAIN || "localhost",
 	port: process.env.APP_PORT || "80",
-	version: process.env.APP_VERSION
+	version: process.env.npm_package_version || "unknown"
 };
 module.exports.app.hostname = module.exports.app.subdomain ? module.exports.app.subdomain + "." + module.exports.app.domain : module.exports.app.domain;
 module.exports.app.url = module.exports.app.protocol + "://" + module.exports.app.hostname + (["80", "443"].indexOf(module.exports.app.port) === -1 ? ":" + module.exports.app.port : "");

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {Link} from "react-router";
 import $ from "jquery";
 import Auth0Lock from "auth0-lock";
-console.log(Auth0Lock);
+
 class App extends Component {
 	componentWillMount () {
 		this.setupAjax();
@@ -13,7 +13,7 @@ class App extends Component {
 	}
 
 	createLock () {
-		//this.lock = new Auth0Lock(this.props.clientId, this.props.domain);
+		this.lock = new Auth0Lock("lObLIK59qW7JrDFW6RP0u0o6OkCawr7F", "savvynyc.auth0.com");
 	}
 
 	setupAjax () {

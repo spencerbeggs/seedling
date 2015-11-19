@@ -1,6 +1,19 @@
+var config = require("../config");
 var gulp = require("gulp");
 var webpack = require("webpack");
-var gulpWebpack = require("gulp-webpack");
+var path = require("path");
+var gutil = require("gulp-util");
+
+var plugins = [new webpack.DefinePlugin({
+	"process.env": Object.keys(process.env).reduce(function (o, k) {
+		o[k] = JSON.stringify(process.env[k]);
+		return o;
+	}, {BROWSER: true})
+})];
+
+if (config.app.is.prod) {
+	plugins.push(new webpack.optimize.UglifyJsPlugin({minimize: true}));
+}
 
 /**
  * @module tasks/webpack
@@ -49,10 +62,65 @@ var gulpWebpack = require("gulp-webpack");
 	}
 
 	return gulp.task(name, function (done) {
-	gulp.src(options.src)
-		.pipe(gulpWebpack({}, webpack))
-		.pipe(gulp.dest(outputPath));
-});
+		webpack({
+			entry: [
+				"babel-polyfill",
+				options.src[0]
+			],
+			output: {
+				filename: options.dest,
+				sourceMapFilename: "[file].map"
+			},
+			devtool: config.app.is.dev ? "source-map" : false,
+			watch: config.app.is.dev,
+			plugins: plugins,
+			module: {
+				loaders: [{
+					loader: "transform?envify",
+					exclude: /(node_modules|bower_components)/,
+					test: /\.jsx?$/,
+					query: {
+						BROWSER: true
+					}
+				},{
+					loader: "babel-loader",
+
+					// Skip any files outside of your project's `src` directory
+					exclude: /(node_modules|bower_components)/,
+
+					// Only run `.js` and `.jsx` files through Babel
+					test: /\.jsx?$/,
+
+					// Options to configure babel with
+					query: {
+						plugins: ["transform-runtime"],
+						presets: ["es2015", "stage-0", "react"]
+					}
+				}, {
+					test: /node_modules\/auth0-lock\/.*\.js$/,
+					loaders: [
+						"transform-loader/cacheable?brfs",
+						"transform-loader/cacheable?packageify"
+					]
+				}, {
+					test: /node_modules\/auth0-lock\/.*\.ejs$/,
+					loader: "transform-loader/cacheable?ejsify"
+				}, {
+					test: /\.json$/,
+					loader: "json-loader"
+				}]
+			}
+		}, function (err, stats) {
+			if (err) {
+				throw new gutil.PluginError("webpack", err);
+			}
+
+			gutil.log("[webpack]", stats.toString({
+					// output options
+			}));
+			done();
+		});
+	});
 }
 
 module.exports = task;

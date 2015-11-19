@@ -10,5 +10,3 @@ try {
 	console.log(err);
 	gutil.log("[WARNING] No .env file found");
 }
-
-process.env.APP_VERSION = process.env.npm_package_version || "unknown";

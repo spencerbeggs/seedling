@@ -136,7 +136,7 @@ function task(options) {
 		});
 		bundler.transform("packageify");
 		bundler.transform(envify(Object.assign({}, process.env, {
-			BROWSERIFY: "true"
+			BROWSER: "true"
 		})));
 		bundler.on("update", rebundle);
 		bundler.on("log", gutil.log);

@@ -31,19 +31,21 @@ function task(options) {
 
 	if (options.js) {
 		let devTaskName = options.name + "-js";
-		browserify({
+		webpack({
 			name: devTaskName,
 			src: options.js,
 			dest: "./public/js/" + options.name + suffix + ".js"
 		});
+
 		devTasks.push(devTaskName);
-		let buildTaskName = options.name + "-js-build";
-		browserify({
-			name: buildTaskName,
-			src: options.js,
-			dest: "./public/js/" + options.name + suffix + ".js"
-		});
-		buildTasks.push(buildTaskName);
+
+		// let buildTaskName = options.name + "-js-build";
+		// browserify({
+		// 	name: buildTaskName,
+		// 	src: options.js,
+		// 	dest: "./public/js/" + options.name + suffix + ".js"
+		// });
+		// buildTasks.push(buildTaskName);
 	}
 
 	// if (options.js) {

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import UserStore from "../stores/user";
-//import * as UserActionCreators from "../actions/user";
+import * as UserActionCreators from "../actions/user";
 
 /**
  * Requests data from server for current props.
@@ -19,7 +19,7 @@ function getState(props) {
 	return page;
 }
 
-@connectToStores([UserStore], getState)
+// @connectToStores([UserStore], getState)
 class Profile extends Component {
 	static propTypes = {
 		// Injected by React Router:
@@ -52,7 +52,7 @@ class Profile extends Component {
 	}
 }
 
-@connectToStores([UserStore], getState)
+// @connectToStores([UserStore], getState)
 class UserIndex extends Component {
 	render () {
 		return (

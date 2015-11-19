@@ -9,7 +9,8 @@ import shallowEqual from "react-pure-render/shallowEqual";
 * Read more about higher-order components: https://goo.gl/qKYcHa
 * Read more about decorators: https://github.com/wycats/javascript-decorators
 */
-export default function connectToStores(stores, getState) {
+
+function connectToStores(stores, getState) {
 	return function (DecoratedComponent) {
 		const displayName = DecoratedComponent.displayName || DecoratedComponent.name || "Component";
 
@@ -46,3 +47,5 @@ export default function connectToStores(stores, getState) {
 		};
 	};
 }
+
+export default connectToStores;

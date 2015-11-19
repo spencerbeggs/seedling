@@ -10,9 +10,9 @@
 
  */
 
-var config = Object.assign({}, process.env, require("./public"));
+var config = Object.assign({}, require("./public"));
 
-if (!process.env.BROWSERIFY) {
+if (!process.env.BROWSER) {
 	Object.assign(config, require("./private"));
 }
 
