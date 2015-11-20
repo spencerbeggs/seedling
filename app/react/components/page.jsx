@@ -3,19 +3,10 @@ import PageStore from "../stores/pages";
 import * as PageActionCreators from "../actions/page";
 
 /**
- * Requests data from server for current props.
- */
-function requestData(props) {
-	const {params} = props;
-	PageActionCreators.getBySlug(params.slug);
-}
- 
-/**
  * Retrieves state from stores for current props.
  */
 function getState(props) {
-	const content = PageStore.get(props.params.slug);
-	return {content};
+	return PageStore.get(props.params.slug);
 }
 
 //@connectToStores([PageStore], getState)
@@ -31,23 +22,31 @@ class Page extends Component {
 	}
 
 	componentWillMount () {
-		requestData(this.props);
+		this.requestData(this.props);
 		this.state = getState(this.props);
 	}
-
+	componentDidUpdate() {
+		console.log(this);
+	}
 	componentWillReceiveProps (nextProps) {
-		requestData(nextProps);
+		this.state = this.requestData(nextProps);
 	}
 
+	requestData(props) {
+		const {params} = props;
+		PageActionCreators.getBySlug(params.slug);
+	}
+
+
 	componentDidMount () {
-		console.log(this.state);
+		//console.log(this.state);
 	}
 
 	render () {
-		console.log(this.props);
+		console.log("HHH");
 		return (
 			<section>
-				<h1>{this.props.title}</h1>
+				<h1>{this.state.title}</h1>
 			</section>
 		);
 	}

@@ -49,11 +49,11 @@ tasks.esdoc({
 	src: ["./config/**/*.js", "./tasks/*.js"]
 });
 
-// tasks.zone({
-// 	name: "jquery",
-// 	js: "./app/jquery/app.js",
-// 	css: "./styles/jquery/app.less"
-// });
+tasks.zone({
+	name: "jquery",
+	js: "./app/jquery/app.js",
+	css: "./styles/jquery/app.less"
+});
 
 tasks.zone({
 	name: "react",

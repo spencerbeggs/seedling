@@ -4,11 +4,9 @@ const webpack = require("webpack");
 const path = require("path");
 const gutil = require("gulp-util");
 
-process.env.BROWSER = true;
-
 const plugins = [
     new webpack.EnvironmentPlugin([
-        "BROWSER",
+      "BROWSER",
       "NODE_ENV",
       "APP_NAME",
       "APP_SLUG",
@@ -23,14 +21,14 @@ const plugins = [
 if (config.app.is.prod) {
 	plugins.push(new webpack.optimize.UglifyJsPlugin({
 		compress: {
-            screw_ie8: true,
-            keep_fnames: true,
-            warnings: false
-        },
+			screw_ie8: true,
+			keep_fnames: true,
+			warnings: false
+		},
 		mangle: {
-            screw_ie8: true,
-            keep_fnames: true
-        }
+			screw_ie8: true,
+			keep_fnames: true
+		}
 	}),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin());

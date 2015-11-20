@@ -12,12 +12,6 @@ import {Profile, UserIndex} from "./components/user.jsx";
 var config = require("config");
 console.log("App started: %O", config);
 
-class LoginPage extends Component {
-	render () {
-		<Login title="Foo" />;
-	}
-}
-
 render((
 	<Router history={history}>
 		<Route path="/" component={App}>
