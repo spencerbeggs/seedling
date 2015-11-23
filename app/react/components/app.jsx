@@ -1,48 +1,9 @@
 import React, { Component } from "react";
 import {Link} from "react-router";
-import $ from "jquery";
-import Auth0Lock from "auth0-lock";
+import { connect } from "react-redux";
+import { pushState } from "redux-router";
 
 class App extends Component {
-	componentWillMount () {
-		this.setupAjax();
-
-		this.createLock();
-
-		this.setState({idToken: this.getIdToken()});
-	}
-
-	createLock () {
-		this.lock = new Auth0Lock("lObLIK59qW7JrDFW6RP0u0o6OkCawr7F", "savvynyc.auth0.com");
-	}
-
-	setupAjax () {
-		$.ajaxSetup({
-			beforeSend: function (xhr) {
-				if (localStorage.getItem("userToken")) {
-					xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("userToken"));
-				}
-			}
-		});
-	}
-
-	getIdToken () {
-		var idToken = localStorage.getItem("userToken");
-		var authHash = this.lock.parseHash(window.location.hash);
-
-		if (!idToken && authHash) {
-			if (authHash.id_token) {
-				idToken = authHash.id_token;
-				localStorage.setItem("userToken", authHash.id_token);
-			}
-
-			if (authHash.error) {
-				console.log("Error signing in", authHash);
-			}
-		}
-
-		return idToken;
-	}
 
 	render () {
 		return (
@@ -51,16 +12,16 @@ class App extends Component {
 					<nav>
 						<ul className="nav nav-pills">
 							<li className="nav-item">
-								<Link to="/">Home</Link>
+								<Link to="/react">Home</Link>
 							</li>
 							<li className="nav-item">
-								<Link to="/summary">Summary</Link>
+								<Link to="/react/summary">Summary</Link>
 							</li>
 							<li className="nav-item">
-								<Link to="/splash">Splash</Link>
+								<Link to="/react/splash">Splash</Link>
 							</li>
 							<li className="nav-item">
-								<Link to="/foo">Foo</Link>
+								<Link to="/react/foo">Foo</Link>
 							</li>
 						</ul>
 					</nav>
@@ -75,5 +36,14 @@ class App extends Component {
 		);
 	}
 }
+
+connect(
+
+  // Use a selector to subscribe to state
+  state => ({q: state.router.location.query.q}),
+
+  // Use an action creator for navigation
+  {pushState}
+)(App);
 
 export default App;

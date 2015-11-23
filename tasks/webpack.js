@@ -106,7 +106,12 @@ function task(options) {
 
 					// Options to configure babel with
 					query: {
-						plugins: ["transform-runtime"],
+						plugins: [
+							"syntax-decorators",
+							"transform-decorators",
+							"transform-class-properties",
+							"transform-runtime"
+						],
 						presets: ["es2015", "stage-0", "react"]
 					}
 				}, {
