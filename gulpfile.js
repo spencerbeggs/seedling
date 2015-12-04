@@ -30,7 +30,7 @@ tasks.beautifyCSS({
 });
 
 tasks.json({
-	src: ["package.json", ".jsbeautifyrc", ".jscsrc", ".eslintrc"]
+	src: ["package.json", ".jsbeautifyrc", ".jscsrc"]
 });
 
 // tasks.eslint({

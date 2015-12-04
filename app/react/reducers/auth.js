@@ -1,6 +1,5 @@
 import { combineReducers } from "redux";
 import {
-<<<<<<< HEAD
   LOGIN,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
@@ -9,16 +8,6 @@ import {
   LOGOUT_ERROR,
   SHOW_MESSAGE,
   CLEAR_MESSAGE
-=======
-	LOGIN,
-	LOGIN_SUCCESS,
-	LOGIN_ERROR,
-	LOGOUT,
-	LOGOUT_SUCCESS,
-	LOGOUT_ERROR,
-	SHOW_MESSAGE,
-	CLEAR_MESSAGE
->>>>>>> origin/master
 } from "../actions/auth";
 
 const TOKEN = "redux-demo-token";
