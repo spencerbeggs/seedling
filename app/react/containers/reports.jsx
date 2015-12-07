@@ -1,14 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Grid, Row, Col } from "react-bootstrap";
-
-import { addTodo, fetchTodos, completeTodo, setVisibilityFilter, VisibilityFilters } from "../actions/todo";
-import AddTodo from "../components/todos/add_todo.jsx";
-import TodoList from "../components/todos/todo_list.jsx";
-import Footer from "../components/todos/footer.jsx";
+import { addTodo, fetchTodos, completeTodo, setVisibilityFilter, VisibilityFilters } from "../actions/reports";
+import AddTodo from "../components/reports/add.jsx";
+import ReportList from "../components/reports/list.jsx";
+import Footer from "../components/reports/footer.jsx";
 import Spinner from "../components/lib/spinner.jsx";
 
-class TodoApp extends Component {
+class Reports extends Component {
 
 	componentDidMount () {
 		const {dispatch} = this.props;
@@ -19,16 +17,16 @@ class TodoApp extends Component {
 		const {dispatch, visibleTodos, visibilityFilter, isProcessing} = this.props;
 
 		return (
-			<div>
+			<div id="page">
 				<Spinner show={isProcessing} />
-				<Row>
-					<Col xs={8}>
+				<div>
+					<div>
 						<AddTodo
 							onAddClick={text =>
 								dispatch(addTodo(text))
 							} />
-						<TodoList
-							todos={visibleTodos}
+						<ReportList
+							reports={visibleTodos}
 							onTodoClick={index =>
 								dispatch(completeTodo(index))
 							} />
@@ -37,14 +35,14 @@ class TodoApp extends Component {
 							onFilterChange={nextFilter =>
 								dispatch(setVisibilityFilter(nextFilter))
 							} />
-					</Col>
-				</Row>
+					</div>
+				</div>
 			</div>
 		);
 	}
 }
 
-TodoApp.propTypes = {
+Reports.propTypes = {
 	visibleTodos: PropTypes.arrayOf(PropTypes.shape({
 		text: PropTypes.string.isRequired,
 		completed: PropTypes.bool.isRequired
@@ -56,24 +54,24 @@ TodoApp.propTypes = {
 	]).isRequired
 };
 
-function selectTodos(todos, filter) {
+function selectTodos(reports, filter) {
 	switch (filter) {
 		case VisibilityFilters.SHOW_ALL:
-			return todos;
+			return reports;
 		case VisibilityFilters.SHOW_COMPLETED:
-			return todos.filter(todo => todo.completed);
+			return reports.filter(report => report.completed);
 		case VisibilityFilters.SHOW_ACTIVE:
-			return todos.filter(todo => !todo.completed);
+			return reports.filter(report => !report.completed);
 	}
 }
 
 function select(state) {
-	const todo = state.todo;
+	const report = state.report;
 	return {
-		isProcessing: todo.isProcessing,
-		visibleTodos: selectTodos(todo.todos.toArray(), todo.visibilityFilter),
-		visibilityFilter: todo.visibilityFilter
+		isProcessing: report.isProcessing,
+		visibleTodos: selectTodos(report.reports.toArray(), report.visibilityFilter),
+		visibilityFilter: report.visibilityFilter
 	};
 }
 
-export default connect(select)(TodoApp);
+export default connect(select)(Reports);

@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import { List, Map } from "immutable";
 
-import { TODO_REQUEST, ADD_TODO_SUCCESS, RECEIVE_TODOS, COMPLETE_TODO_SUCCESS, SET_VISIBILITY_FILTER, VisibilityFilters } from "../actions/todo";
+import { TODO_REQUEST, ADD_TODO_SUCCESS, RECEIVE_TODOS, COMPLETE_TODO_SUCCESS, SET_VISIBILITY_FILTER, VisibilityFilters } from "../actions/reports";
 
 const {SHOW_ALL} = VisibilityFilters;
 
@@ -16,7 +16,7 @@ function visibilityFilter(state = SHOW_ALL, action) {
 	}
 }
 
-function todos(state = initialState, action) {
+function reports(state = initialState, action) {
 	switch (action.type) {
 	case ADD_TODO_SUCCESS:
 		return state.push(action.todo);
@@ -38,10 +38,10 @@ function isProcessing(state = false, action) {
 	}
 }
 
-const todoApp = combineReducers({
+const reportApp = combineReducers({
 	visibilityFilter,
-	todos,
+	reports,
 	isProcessing
 });
 
-export default todoApp;
+export default reportApp;

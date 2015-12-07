@@ -4,26 +4,56 @@
 $blue: #fff;
 
 body {
-    background-color: $blue;
-}
-
-form {
-    @extend .col-md-6;
+	background-color: $blue;
 }
 
 #page {
 	@extend .container;
-	min-height: 100vh;
+	min-height: calc(100vh - 352px);
 }
 
 #app {
 	min-height: 100vh;
 	min-width: 100vw;
 	> header {
-		background-color: rgba(0, 0, 0, .5);
-		height: 3rem;
+		background-color: #900028;
+		height: 140px;
 		> nav {
 			@extend .container;
+		}
+	}
+	> footer {
+		background-color: #900028;
+		height: 212px;
+
+		> div {
+			@extend .container;
+			padding: 50px;
+			height: 100%;
+			.logo {
+				@extend .col-md-3;
+				img {
+					@extend .img-responsive;
+				}
+			}
+			.slogan {
+				@extend .col-md-6;
+				p {
+					color: white;
+					margin: 0;
+					text-align: center;
+				}
+			}
+			.links {
+				@extend .col-md-3;
+				ul {
+					list-style-type: none;
+				}
+				a {
+					color: white;
+					text-transform: uppercase;
+				}
+			}
 		}
 	}
 	#content {
@@ -32,4 +62,25 @@ form {
 		background-color: gray;
 		min-height: 100vh;
 	}
+}
+#report-list {
+	@extend .row;
+}
+
+.report {
+	@extend .col-md-4;
+}
+
+.report-image {
+	display: block;
+	img {
+		@extend .img-responsive;
+		width: 100%;
+	}
+}
+
+#searchbar {
+	text-align: center;
+	padding-top: 3rem;
+	padding-bottom: 3rem;
 }

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 
-export default class Todo extends Component {
+export default class Report extends Component {
 
 	constructor (props) {
 		super(props);
@@ -15,21 +15,25 @@ export default class Todo extends Component {
 
 	render () {
 		return (
-			<li
+			<div className="report"
 				onClick={this.handleClick}
 				style={{
 					textDecoration: this.props.completed ? "line-through" : "none",
 					cursor: this.props.completed ? "default" : "pointer"
 				}}
 			>
-			{this.props.text}
-			</li>
+				<a className="report-image">
+					<img src="http://placehold.it/250x100" />
+				</a>
+				<h5>{this.props.title}</h5>
+				<p>{this.props.description}</p>
+			</div>
 		);
 	}
 }
 
-Todo.propTypes = {
+Report.propTypes = {
 	onClick: PropTypes.func.isRequired,
-	text: PropTypes.string.isRequired,
-	completed: PropTypes.bool.isRequired
+	title: PropTypes.string.isRequired,
+	url: PropTypes.bool.isRequired
 };

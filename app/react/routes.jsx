@@ -1,16 +1,20 @@
 import React from "react";
 import { Router, Route, IndexRoute } from "react-router";
-import createHistory from "history/lib/createBrowserHistory";
+import {createHistory, useBasename} from "history";
 import { syncReduxAndRouter } from "redux-simple-router";
 
 import App from "./containers/app.jsx";
 import Admin from "./containers/admin.jsx";
 import Home from "./containers/home.jsx";
-import TodoApp from "./containers/todo_app.jsx";
+import Reports from "./containers/reports.jsx";
 import Login from "./containers/login.jsx";
 import NotFound from "./containers/not_found.jsx";
 
-const history = createHistory();
+const history = useBasename(createHistory)({
+	basename: "/react"
+});
+
+createHistory();
 
 export default function getRoutes(store) {
 	syncReduxAndRouter(history, store);
@@ -23,14 +27,14 @@ export default function getRoutes(store) {
 
 	return (
 		<Router history={history}>
-			<Route path="/react" component={App}>
-				<Route path="/login" component={Login} />
-				<Route component={Admin} onEnter={requireAuth}>
+			<Route path="/login" component={Login} />
+			<Route path="/" onEnter={requireAuth} component={App}>
+				<IndexRoute component={Home} />
+				<Route path="/reports" component={Reports}>
 					<IndexRoute component={Home} />
-					<Route path="/todo" component={TodoApp} />
 				</Route>
-				<Route path="/*" component={NotFound} />
 			</Route>
+			<Route path="/*" component={NotFound} />
 		</Router>
 	);
 };

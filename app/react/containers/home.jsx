@@ -1,13 +1,15 @@
 import React from "react";
-
-import { Row, Col } from "react-bootstrap";
+import SearchReportsBar from "../components/reports/search.jsx";
 
 export default class Home extends React.Component {
-  render () {
+	foo() {
+
+	}
+	render () {
 		return (
-			<Row>
-				<Col xs={8}>Redux Demo Application</Col>
-			</Row>
+			<div>
+				<SearchReportsBar onAddClick={this.foo} />
+			</div>
 		);
 	}
 }

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Input, Button } from "react-bootstrap";
 
-export default class AddTodo extends Component {
+export default class AddReport extends Component {
 
 	render () {
 		let addButton = (
@@ -29,6 +29,6 @@ export default class AddTodo extends Component {
 	}
 }
 
-AddTodo.propTypes = {
+AddReport.propTypes = {
 	onAddClick: PropTypes.func.isRequired
 };
