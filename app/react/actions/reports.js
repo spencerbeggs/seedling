@@ -1,7 +1,7 @@
-import todoApi from "../api/reports";
+import api from "../api/reports";
 
 export const SET_VISIBILITY_FILTER = "SET_VISIBILITY_FILTER";
-export const TODO_REQUEST = "TODO_REQUEST";
+export const REPORT_REQUEST = "REPORT_REQUEST";
 export const ADD_TODO_SUCCESS = "ADD_TODO_SUCCESS";
 export const RECEIVE_TODOS = "RECEIVE_TODOS";
 export const COMPLETE_TODO_SUCCESS = "COMPLETE_TODO_SUCCESS";
@@ -13,37 +13,52 @@ export const VisibilityFilters = {
 	SHOW_ACTIVE: "SHOW_ACTIVE"
 };
 
+export const SortByFilters = {
+	DATE: "DATE"
+};
+
+export const SortOrderFilters = {
+	DESC: "DESC",
+	ASC: "ASC"
+};
+
 export function todoRequest() {
-	return {type: TODO_REQUEST};
+	return {
+		type: REPORT_REQUEST
+	};
 }
 
-export function addTodoSuccess(todo) {
-	return {type: ADD_TODO_SUCCESS, todo};
+export function addTodoSuccess(report) {
+	return {
+		type: ADD_TODO_SUCCESS,
+		report
+	};
 }
 
 export function addTodo(text) {
 	return function (dispatch) {
 		dispatch(todoRequest());
 
-		return todoApi.add(text).then(todo => {
+		return api.add(text).then(todo => {
 			dispatch(addTodoSuccess(todo));
 		});
 	};
 }
 
-export function receiveTodos(reports) {
-	return {
+export function receiveReports(todos) {
+	let data = {
 		type: RECEIVE_TODOS,
-		reports
+		todos
 	};
+	return data;
 }
 
-export function fetchTodos() {
+export function fetchReports() {
 	return function (dispatch) {
 		dispatch(todoRequest());
 
-		return todoApi.get().then(todos => {
-			dispatch(receiveTodos(todos));
+		return api.get().then(reports => {
+			dispatch(receiveReports(reports));
 		});
 	};
 }
@@ -60,8 +75,8 @@ export function completeTodo(index) {
 	return function (dispatch) {
 		dispatch(todoRequest());
 
-		return todoApi.complete(index).then(todo => {
-			dispatch(completeTodoSuccess(index, todo));
+		return api.complete(index).then(report => {
+			dispatch(completeTodoSuccess(index, report));
 		});
 	};
 }

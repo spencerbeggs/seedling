@@ -1,17 +1,18 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { addTodo, fetchTodos, completeTodo, setVisibilityFilter, VisibilityFilters } from "../actions/reports";
+import { addTodo, fetchReports, completeTodo, setVisibilityFilter, VisibilityFilters, SortByFilters, SortOrderFilters} from "../actions/reports";
 import AddTodo from "../components/reports/add.jsx";
 import ReportList from "../components/reports/list.jsx";
 import Footer from "../components/reports/footer.jsx";
 import Spinner from "../components/lib/spinner.jsx";
 import Filter from "redux-filter";
+import _ from "lodash";
 
 class Reports extends Component {
 
 	componentDidMount () {
 		const {dispatch} = this.props;
-		dispatch(fetchTodos());
+		dispatch(fetchReports());
 	}
 
 	render () {
@@ -50,7 +51,7 @@ class Reports extends Component {
 							} />
 						<Filter {...config}>
 						<ReportList
-							reports={visibleTodos}
+							reports={items}
 							onTodoClick={index =>
 								dispatch(completeTodo(index))
 							} />
@@ -60,6 +61,12 @@ class Reports extends Component {
 							onFilterChange={nextFilter =>
 								dispatch(setVisibilityFilter(nextFilter))
 							} />
+						<ReportList
+							reports={items}
+							onTodoClick={index =>
+								dispatch(completeTodo(index))
+							} />
+
 					</div>
 				</div>
 			</div>
@@ -68,10 +75,16 @@ class Reports extends Component {
 }
 
 Reports.propTypes = {
-	visibleTodos: PropTypes.arrayOf(PropTypes.shape({
-		text: PropTypes.string.isRequired,
-		completed: PropTypes.bool.isRequired
+	items: PropTypes.arrayOf(PropTypes.shape({
+		title: PropTypes.string.isRequired
 	})),
+	sortBy: PropTypes.oneOf([
+		"Date"
+	]).isRequired,
+	sortOrder: PropTypes.oneOf([
+		"ASC",
+		"DESC"
+	]).isRequired,
 	visibilityFilter: PropTypes.oneOf([
 		"SHOW_ALL",
 		"SHOW_COMPLETED",
@@ -92,10 +105,21 @@ function selectTodos(reports, filter) {
 
 function select(state) {
 	const report = state.report;
+	var visibleReports = selectTodos(report.reports.toArray(), report.visibilityFilter);
+	var sortedReports;
+
+	if (report.sortOrder === "ASC") {
+		sortedReports = _.sortBy(visibleReports, "added");
+	} else {
+		sortedReports = visibleReports;
+	}
+
 	return {
 		isProcessing: report.isProcessing,
-		visibleTodos: selectTodos(report.reports.toArray(), report.visibilityFilter),
-		visibilityFilter: report.visibilityFilter
+		items: sortedReports,
+		visibilityFilter: report.visibilityFilter,
+		sortBy: report.sortBy,
+		sortOrder: report.sortOrder
 	};
 }
 

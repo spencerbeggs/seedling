@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
 import { List, Map } from "immutable";
-
-import { TODO_REQUEST, ADD_TODO_SUCCESS, RECEIVE_TODOS, COMPLETE_TODO_SUCCESS, SET_VISIBILITY_FILTER, VisibilityFilters } from "../actions/reports";
+import { REPORT_REQUEST, ADD_TODO_SUCCESS, RECEIVE_TODOS, COMPLETE_TODO_SUCCESS, SET_VISIBILITY_FILTER, VisibilityFilters, SortByFilters, SortOrderFilters } from "../actions/reports";
 
 const {SHOW_ALL} = VisibilityFilters;
 
@@ -13,6 +12,14 @@ function visibilityFilter(state = SHOW_ALL, action) {
 		return action.filter;
 	default:
 		return state;
+	}
+}
+
+function sortBy(state = "DATE", action) {
+	switch (action.type) {
+
+		default:
+			return state;
 	}
 }
 
@@ -31,7 +38,7 @@ function reports(state = initialState, action) {
 
 function isProcessing(state = false, action) {
 	switch (action.type) {
-	case TODO_REQUEST:
+	case REPORT_REQUEST:
 		return true;
 	default:
 		return false;
@@ -41,7 +48,7 @@ function isProcessing(state = false, action) {
 const reportApp = combineReducers({
 	visibilityFilter,
 	reports,
-	isProcessing
+	isProcessing,
 });
 
 export default reportApp;
