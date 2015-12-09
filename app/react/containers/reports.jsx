@@ -5,6 +5,7 @@ import AddTodo from "../components/reports/add.jsx";
 import ReportList from "../components/reports/list.jsx";
 import Footer from "../components/reports/footer.jsx";
 import Spinner from "../components/lib/spinner.jsx";
+import Filter from "redux-filter";
 
 class Reports extends Component {
 
@@ -15,7 +16,29 @@ class Reports extends Component {
 
 	render () {
 		const {dispatch, visibleTodos, visibilityFilter, isProcessing} = this.props;
+		const config = {
 
+			// things that are filtered
+			subjects: visibleTodos,
+
+			// attributes that you filter.
+			// Component will return a unique list of attributes for each filterableCriteria
+			filterableCriteria: [{
+				title: "Filter By Practice Area",
+				attribute: "practices"
+			}, {
+				title: "Filter Alphabetically",
+				attribute: "initial"
+			}],
+
+			// keys on each subject that will be searched on
+			searchKeys: ["title", "subhead", "practices"],
+
+			// if you need to order the filterableCriteria output
+			filterableCriteriaSortOptions: {
+				tags: items => [...items].sort()
+			}
+		};
 		return (
 			<div id="page">
 				<Spinner show={isProcessing} />
@@ -25,11 +48,13 @@ class Reports extends Component {
 							onAddClick={text =>
 								dispatch(addTodo(text))
 							} />
+						<Filter {...config}>
 						<ReportList
 							reports={visibleTodos}
 							onTodoClick={index =>
 								dispatch(completeTodo(index))
 							} />
+						</Filter>
 						<Footer
 							filter={visibilityFilter}
 							onFilterChange={nextFilter =>
