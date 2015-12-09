@@ -2,6 +2,14 @@ import React, { Component, PropTypes } from "react";
 import Report from "./report.jsx";
 
 export default class ReportList extends Component {
+	constructor (props) {
+		super(props);
+		this.state = {
+			sortBy: "Date",
+			sortOrder: "DESC"
+		};
+	}
+
 	render () {
 		return (
 			<div id="report-list">

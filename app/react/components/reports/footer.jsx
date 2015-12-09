@@ -19,7 +19,7 @@ export default class Footer extends Component {
 
 	render () {
 		return (
-			<p>Show:{" "}{this.renderFilter("SHOW_ALL", "All")}{", "}{this.renderFilter("SHOW_COMPLETED", "Completed")}{", "}{this.renderFilter("SHOW_ACTIVE", "Active")}.</p>
+			<p>Sort:{" "}{this.renderFilter("SHOW_ALL", "Date")}{", "}{this.renderFilter("SHOW_COMPLETED", "Completed")}{", "}{this.renderFilter("SHOW_ACTIVE", "Active")}.</p>
 		);
 	}
 }

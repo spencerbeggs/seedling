@@ -35,5 +35,5 @@ export default class Report extends Component {
 Report.propTypes = {
 	onClick: PropTypes.func.isRequired,
 	title: PropTypes.string.isRequired,
-	url: PropTypes.bool.isRequired
+	url: PropTypes.string.isRequired
 };

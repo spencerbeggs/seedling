@@ -7,6 +7,7 @@ import App from "./containers/app.jsx";
 import Admin from "./containers/admin.jsx";
 import Home from "./containers/home.jsx";
 import Reports from "./containers/reports.jsx";
+import Report from "./containers/report.jsx";
 import Login from "./containers/login.jsx";
 import NotFound from "./containers/not_found.jsx";
 
@@ -32,6 +33,7 @@ export default function getRoutes(store) {
 				<IndexRoute component={Home} />
 				<Route path="/reports" component={Reports}>
 					<IndexRoute component={Home} />
+					<Route path="/foo" component={Report} />
 				</Route>
 			</Route>
 			<Route path="/*" component={NotFound} />
