@@ -94,6 +94,7 @@
     "eslint-config-es2015-react": "^0.1.2",
     "eslint-plugin-babel": "^2.1.1",
     "eslint-plugin-react": "^3.9.0",
+    "faker": "^3.0.1",
     "flux": "^2.1.1",
     "gulp": "gulpjs/gulp#4.0",
     "gulp-autoprefixer": "^3.0.2",

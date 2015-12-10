@@ -4,36 +4,22 @@ export default class Report extends Component {
 
 	constructor (props) {
 		super(props);
-		this.handleClick = this.handleClick.bind(this);
-	}
-
-	handleClick () {
-		if (!this.props.completed) {
-			this.props.onClick();
-		}
 	}
 
 	render () {
+		const {title, department} = this.props;
 		return (
-			<div className="report"
-				onClick={this.handleClick}
-				style={{
-					textDecoration: this.props.completed ? "line-through" : "none",
-					cursor: this.props.completed ? "default" : "pointer"
-				}}
-			>
+			<div className="report">
 				<a className="report-image">
-					<img src="http://placehold.it/250x100" />
+					<img src="http://placehold.it/400x400" />
+					<h5>{this.props.title}</h5>
 				</a>
-				<h5>{this.props.title}</h5>
-				<p>{this.props.description}</p>
 			</div>
 		);
 	}
 }
 
 Report.propTypes = {
-	onClick: PropTypes.func.isRequired,
 	title: PropTypes.string.isRequired,
 	url: PropTypes.string.isRequired
 };

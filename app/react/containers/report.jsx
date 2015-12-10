@@ -34,11 +34,7 @@ function select(state) {
 	}
 
 	return {
-		isProcessing: report.isProcessing,
-		items: sortedReports,
-		visibilityFilter: report.visibilityFilter,
-		sortBy: report.sortBy,
-		sortOrder: report.sortOrder
+		reports: sortedReports,
 	};
 }
 

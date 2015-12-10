@@ -68,14 +68,22 @@ body {
 }
 
 .report {
-	@extend .col-md-4;
+	@extend .col-md-2;
 }
 
 .report-image {
 	display: block;
+	position: relative;
+	margin-bottom: 1rem;
 	img {
 		@extend .img-responsive;
 		width: 100%;
+	}
+	h5 {
+		position: absolute;
+		bottom: 0;
+		padding: .5rem;
+		font-size: .75rem;
 	}
 }
 
