@@ -64,7 +64,10 @@ function makeIt() {
 		"Classrooms",
 		"Buildings",
 		"Administrators",
-		"Staff Member"
+		"Staff Member",
+		"People",
+		"Animals",
+		"Siblings"
 	];
 	let second = [
 		"Needed for",
@@ -72,6 +75,10 @@ function makeIt() {
 		"Required to",
 		"Wanted to",
 		"Open for",
+		"That Can",
+		"Will Fail",
+		"Are Passing",
+		"Won't Do",
 		"Allowed to",
 		"Disallowed from",
 		"Not Required to"
@@ -93,16 +100,20 @@ function makeIt() {
 		"Approve Waitlist",
 		"Create Class"
 	];
-	let range = [1, 2, 3, 4, 5, 6];
+	function range() {
+		return _.sample([1, 2, 3, 4, 5, 6]);
+	}
+
 	return {
 		title: _.sample(first) + " " + _.sample(second) + " " + _.sample(third),
 		url: "http://google.com",
 		enrollment: "http://yahoo.com",
 		description: "This report gives a list of Courses with their Titles, College, Course Number, with Location (Bldg/Room), Section Number, Meeting days and times, Instructors Names, Course Credit Hours, Max Enrollment, Number of Enrolled students and Available enrollments. It is mainly used to check the Status of a course enrollment and availability, where it is being held (Location); total number of seats seats used and seats available.",
-		category: _.sample(["Marketing", "Faculty", "Operations", "Administration", "Analytics", "Board"]),
-		parameters: _.sample(words, _.sample(range)),
-		fields: _.sample(words, _.sample(range)),
-		sources: _.sample(words, _.sample(range)),
+		categories: [_.sample(["Marketing", "Faculty", "Operations", "Administration", "Analytics", "Board"])],
+		parameters: _.sample(words, range()),
+		fields: _.sample(words, range()),
+		sources: _.sample(words, range()),
+		tables: _.sample(words, range()),
 		sql: "html",
 		info: "html"
 	};
@@ -112,7 +123,7 @@ var day = 86400000;
 var range = [day, day * 13, day * 40, day * 180];
 var time = 1418164963;
 
-for (let i = 0; i < 200; i++) {
+for (let i = 0; i < 1000; i++) {
 	var item = makeIt();
 	item.added = time;
 	item.modified = time + _.sample(range);
@@ -122,10 +133,63 @@ for (let i = 0; i < 200; i++) {
 
 export default {
 
-	get () {
-		return REPORTS;
-		// return new Promise(function (resolve, reject) {
-		// 	resolve(REPORTS);
-		// });
+	get (filters = {}) {
+		var collection = [];
+
+		if (!filters.keyword && filters.categories.length === 0 && filters.fields.length === 0 && filters.sources.length === 0 && filters.tables.length === 0) {
+			collection = REPORTS;
+		}
+
+		REPORTS.forEach(function (report) {
+			var matchedKeyword = false;
+			var matchedParam = false;
+			var matchedCategory = false;
+			var matchedField = false;
+			var matchedSource = false;
+			var matchedParam = false;
+
+			if (filters.keyword) {
+				let exp = new RegExp(filters.keyword.toLowerCase().trim());
+				matchedKeyword = exp.test(report.title.toLowerCase());
+			}
+
+			if (filters.categories && filters.categories.length > 0) {
+				filters.categories.forEach(function (category) {
+					if (_.includes(report.categories, category)) {
+						matchedCategory = true;
+					}
+				});
+			}
+
+			if (filters.fields && filters.fields.length > 0) {
+				filters.fields.forEach(function (field) {
+					if (_.includes(report.fields, field)) {
+						matchedField = true;
+					}
+				});
+			}
+
+			if (filters.sources && filters.sources.length > 0) {
+				filters.sources.forEach(function (source) {
+					if (_.includes(report.sources, source)) {
+						matchedSource = true;
+					}
+				});
+			}
+
+			if (filters.parameters && filters.parameters.length > 0) {
+				filters.parameters.forEach(function (parameter) {
+					if (_.includes(report.parameters, parameter)) {
+						matchedParam = true;
+					}
+				});
+			}
+
+			if (matchedKeyword || matchedCategory || matchedField || matchedSource || matchedParam) {
+				collection.push(report);
+			}
+		});
+
+		return collection;
 	}
 };

@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import { List, Map } from "immutable";
-import { REQUEST_REPORTS, RECEIVE_REPORTS } from "../actions/reports";
+import { REQUEST_REPORTS, RECEIVE_REPORTS, RECEIVE_CATEGORIES } from "../actions/reports";
 
 const initialState = List();
 

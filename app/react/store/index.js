@@ -5,7 +5,6 @@ import createLogger from "redux-logger";
 import rootReducer from "../reducers";
 import { devTools, persistState } from "redux-devtools";
 
-
 const finalCreateStore = compose(
 	applyMiddleware(thunk),
 	applyMiddleware(promise),

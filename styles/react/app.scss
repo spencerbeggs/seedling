@@ -1,5 +1,6 @@
 @import "bootstrap";
 @import "components/spinner";
+@import "components/tags";
 
 $blue: #fff;
 
@@ -91,4 +92,19 @@ body {
 	text-align: center;
 	padding-top: 3rem;
 	padding-bottom: 3rem;
+	input {
+
+	}
+}
+
+#exampleInputEmail1 {
+	font-size: 2rem;
+}
+
+#searchform {
+	background-color: #f3f3f3;
+	padding: 4rem;
+	border-radius: 2rem;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
 }
