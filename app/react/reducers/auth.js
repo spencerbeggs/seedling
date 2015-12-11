@@ -1,13 +1,13 @@
 import { combineReducers } from "redux";
 import {
-  LOGIN,
-  LOGIN_SUCCESS,
-  LOGIN_ERROR,
-  LOGOUT,
-  LOGOUT_SUCCESS,
-  LOGOUT_ERROR,
-  SHOW_MESSAGE,
-  CLEAR_MESSAGE
+	LOGIN,
+	LOGIN_SUCCESS,
+	LOGIN_ERROR,
+	LOGOUT,
+	LOGOUT_SUCCESS,
+	LOGOUT_ERROR,
+	SHOW_MESSAGE,
+	CLEAR_MESSAGE
 } from "../actions/auth";
 
 const TOKEN = "redux-demo-token";

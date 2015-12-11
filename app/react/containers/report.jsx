@@ -34,7 +34,7 @@ function select(state) {
 	}
 
 	return {
-		reports: sortedReports,
+		reports: sortedReports
 	};
 }
 

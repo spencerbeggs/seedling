@@ -7,7 +7,6 @@ export default class ReportList extends Component {
 		const {reports} = this.props;
 
 		if (reports.length > 0) {
-			console.log(reports);
 			return (
 				<div id="report-list">
 					{reports.map((report, index) =>
@@ -24,8 +23,8 @@ export default class ReportList extends Component {
 }
 
 ReportList.propTypes = {
-	reports: PropTypes.arrayOf(PropTypes.shape({
+	collection: PropTypes.arrayOf(PropTypes.shape({
 		title: PropTypes.string.isRequired,
 		description: PropTypes.string.isRequired
-	}).isRequired).isRequired
+	}).isRequired)
 };

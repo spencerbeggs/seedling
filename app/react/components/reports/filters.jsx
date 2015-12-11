@@ -1,4 +1,4 @@
-import {Component} from "react";
+import React, { Component } from "react";
 
 const active = (appliedFilters, attribute, value) => appliedFilters[attribute] && (appliedFilters[attribute].indexOf(value) > -1);
 
@@ -6,7 +6,7 @@ class Filters extends Component {
 
 	renderOptionGroup (group) {
 		const {toggleFilter, appliedFilters} = this.props;
-		return group.map(item, idx => {
+		return group.map((item, idx) => {
 			const {attribute, value} = item;
 			const isActive = active(appliedFilters, attribute, value);
 			const style = {
@@ -34,7 +34,7 @@ class Filters extends Component {
 		return (
 			<select onChange={e => handleSortChange(e)}>
 				<option value="" disabled>Sort Functions</option>
-				{sortItems.map(item, idx => <option key={idx} value={idx}>{item.title}</option>)}
+				{sortItems.map((item, idx) => <option key={idx} value={idx}>{item.title}</option>)}
 			</select>
 		);
 	}
@@ -42,12 +42,12 @@ class Filters extends Component {
 	render () {
 		const {optionGroups, clearAllFilters, reports} = this.props;
 		console.log(this.props);
-		const items = optionGroups.map(group, idx => {
+		const items = optionGroups.map((group, idx) => {
 			const {title, values} = group;
 			return (
 				<div key={idx}>
 					<header>{title}</header>
-					{this.renderOptionGroup((values))}
+					{this.renderOptionGroup(values)}
 				</div>
 			);
 		});

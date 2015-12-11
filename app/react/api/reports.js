@@ -1,4 +1,3 @@
-import Promise from "bluebird";
 import _ from "lodash";
 
 const REPORTS = [];
@@ -123,33 +122,10 @@ for (let i = 0; i < 200; i++) {
 
 export default {
 
-	add (text) {
-		return Promise.delay(300).then(() => {
-			let report = {text: text, completed: false};
-			REPORTS.push(report);
-			return report;
-		});
-	},
-
 	get () {
-		return Promise.delay(500).then(() => REPORTS);
-	},
-
-	getBySlug (slug) {
-		var REPORT;
-		REPORTS.forEach(function (report) {
-			if (report.toLowerCase().replace(" ", "-") === slug) {
-				REPORT = report;
-			}
-		});
-
-		return Promise.delay(500).then(() => REPORT);
-	},
-
-	complete (index) {
-		return Promise.delay(300).then(() => {
-			REPORTS[index] = Object.assign({}, REPORTS[index], {completed: true});
-			return REPORTS[index];
-		});
+		return REPORTS;
+		// return new Promise(function (resolve, reject) {
+		// 	resolve(REPORTS);
+		// });
 	}
 };

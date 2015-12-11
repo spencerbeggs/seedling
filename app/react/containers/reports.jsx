@@ -27,26 +27,21 @@ class Reports extends Component {
 			// Component will return a unique list of attributes for each filterableCriteria
 			filterableCriteria: [{
 				title: "Filter By Department",
-				attribute: "department"
-			}, {
-				title: "Filter Alphabetically",
-				attribute: "initial"
+				attribute: "category"
 			}],
 
 			// keys on each subject that will be searched on
-			searchKeys: ["title", "department"],
+			searchKeys: ["title", "category"],
 
 			// if you need to order the filterableCriteria output
 			filterableCriteriaSortOptions: {
-				tags: items => [...items].sort()
+				category: items => [...items].sort()
 			}
 		};
 		return (
 			<div id="page">
 				<Filter {...config}>
-					<ReportList
-						reports={reports}
-					/>
+					<ReportList {...this.props} />
 				</Filter>
 			</div>
 		);
@@ -60,9 +55,9 @@ Reports.propTypes = {
 };
 
 function select(state) {
-	const report = state.report;
+	const reports = state.reports;
 	return {
-		reports: report.reports.toArray()
+		reports: reports.toArray()
 	};
 }
 
