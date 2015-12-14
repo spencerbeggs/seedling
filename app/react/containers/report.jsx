@@ -6,6 +6,7 @@ class Report extends Component {
 
 	componentDidMount () {
 		const {dispatch} = this.props;
+		console.log(this);
 	}
 
 	render () {
@@ -22,19 +23,9 @@ Report.propTypes = {
 };
 
 function select(state) {
-	const report = state.report;
-	console.log(report);
-	var visibleReports = selectTodos(report.reports.toArray(), report.visibilityFilter);
-	var sortedReports;
-
-	if (report.sortOrder === "ASC") {
-		sortedReports = _.sortBy(visibleReports, "added");
-	} else {
-		sortedReports = visibleReports;
-	}
-
+	const reports = state.report;
 	return {
-		reports: sortedReports
+
 	};
 }
 

@@ -31,10 +31,10 @@ export default function getRoutes(store) {
 			<Route path="/login" component={Login} />
 			<Route path="/" onEnter={requireAuth} component={App}>
 				<IndexRoute component={Home} />
-				<Route path="/reports" component={Reports}>
+				<Route path="reports" component={Reports}>
 					<IndexRoute component={Home} />
-					<Route path="/foo" component={Report} />
 				</Route>
+				<Route path=":slug" component={Report} />
 			</Route>
 			<Route path="/*" component={NotFound} />
 		</Router>
