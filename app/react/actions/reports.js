@@ -7,6 +7,14 @@ export const REQUEST_REPORTS = "REQUEST_REPORTS";
 export const REQUEST_CATEGORIES = "REQUEST_CATEGORIES";
 export const RECEIVE_CATEGORIES = "RECEIVE_CATEGORIES";
 
+let options = {
+	keyword: null,
+	categories: [],
+	fields: [],
+	sources: [],
+	tables: []
+};
+
 export function receiveReports(reports) {
 	return {
 		type: RECEIVE_REPORTS,
@@ -28,31 +36,27 @@ export function requestReports() {
 }
 
 export function fetchReports(opts = {}) {
-	let options = Object.assign({
-		keyword: "",
-		categories: [],
-		fields: [],
-		sources: [],
-		tables: []
-	}, opts);
 	return function (dispatch) {
+		Object.assign(options, opts);
 		dispatch(requestReports());
 		dispatch(receiveReports(api.get(options)));
 	};
 }
 
 export function fetchCategories(opts = {}) {
-	let options = Object.assign({
-		keyword: "",
-		categories: [],
-		fields: [],
-		sources: [],
-		tables: []
-	}, opts);
 	return function (dispatch) {
+		Object.assign(options, opts);
 		dispatch({
 			type: REQUEST_CATEGORIES
 		});
 		dispatch(receiveCategories(api.get(options)));
+	};
+}
+
+export function filterReports(opts = {}) {
+	return function (dispatch) {
+		Object.assign(options, opts);
+		const data = api.get(options);
+		dispatch(receiveReports(data));
 	};
 }

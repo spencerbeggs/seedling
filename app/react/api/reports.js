@@ -123,7 +123,7 @@ var day = 86400000;
 var range = [day, day * 13, day * 40, day * 180];
 var time = 1418164963;
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 100; i++) {
 	var item = makeIt();
 	item.added = time;
 	item.modified = time + _.sample(range);
@@ -134,6 +134,7 @@ for (let i = 0; i < 1000; i++) {
 export default {
 
 	get (filters = {}) {
+		console.log(filters);
 		var collection = [];
 
 		if (!filters.keyword && filters.categories.length === 0 && filters.fields.length === 0 && filters.sources.length === 0 && filters.tables.length === 0) {
@@ -142,50 +143,43 @@ export default {
 
 		REPORTS.forEach(function (report) {
 			var matchedKeyword = false;
-			var matchedParam = false;
 			var matchedCategory = false;
 			var matchedField = false;
 			var matchedSource = false;
-			var matchedParam = false;
+			var matchedTable = false;
 
-			if (filters.keyword) {
+			if (filters.keyword !== null) {
 				let exp = new RegExp(filters.keyword.toLowerCase().trim());
 				matchedKeyword = exp.test(report.title.toLowerCase());
 			}
 
-			if (filters.categories && filters.categories.length > 0) {
-				filters.categories.forEach(function (category) {
-					if (_.includes(report.categories, category)) {
-						matchedCategory = true;
-					}
-				});
-			}
+			filters.categories.forEach(function (category) {
+				console.log(category);
 
-			if (filters.fields && filters.fields.length > 0) {
-				filters.fields.forEach(function (field) {
-					if (_.includes(report.fields, field)) {
-						matchedField = true;
-					}
-				});
-			}
+				if (_.includes(report.categories, category)) {
+					matchedCategory = true;
+				}
+			});
 
-			if (filters.sources && filters.sources.length > 0) {
-				filters.sources.forEach(function (source) {
-					if (_.includes(report.sources, source)) {
-						matchedSource = true;
-					}
-				});
-			}
+			filters.fields.forEach(function (field) {
+				if (_.includes(report.fields, field)) {
+					matchedField = true;
+				}
+			});
 
-			if (filters.parameters && filters.parameters.length > 0) {
-				filters.parameters.forEach(function (parameter) {
-					if (_.includes(report.parameters, parameter)) {
-						matchedParam = true;
-					}
-				});
-			}
+			filters.sources.forEach(function (source) {
+				if (_.includes(report.sources, source)) {
+					matchedSource = true;
+				}
+			});
 
-			if (matchedKeyword || matchedCategory || matchedField || matchedSource || matchedParam) {
+			filters.tables.forEach(function (table) {
+				if (_.includes(report.tables, table)) {
+					matchedTable = true;
+				}
+			});
+
+			if (matchedKeyword || matchedCategory || matchedField || matchedSource || matchedTable) {
 				collection.push(report);
 			}
 		});

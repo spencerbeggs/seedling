@@ -6,15 +6,14 @@ export default class Report extends Component {
 
 	constructor (props) {
 		super(props);
-		console.log(this.props);
 	}
 
 	render () {
 		const {title, department} = this.props;
 		var path = "/reports/" + slug(this.props.title).toLowerCase();
 		return (
-			<div className="report" className="report-image">
-				<Link to={path}>
+			<div className="report">
+				<Link to={path} className="report-image">
 					<img src="http://placehold.it/400x400" />
 					<h5>{this.props.title}</h5>
 				</Link>
