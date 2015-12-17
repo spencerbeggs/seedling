@@ -134,7 +134,6 @@ for (let i = 0; i < 100; i++) {
 export default {
 
 	get (filters = {}) {
-		console.log(filters);
 		var collection = [];
 
 		if (!filters.keyword && filters.categories.length === 0 && filters.fields.length === 0 && filters.sources.length === 0 && filters.tables.length === 0) {
@@ -154,7 +153,6 @@ export default {
 			}
 
 			filters.categories.forEach(function (category) {
-				console.log(category);
 
 				if (_.includes(report.categories, category)) {
 					matchedCategory = true;
