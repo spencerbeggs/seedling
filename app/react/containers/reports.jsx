@@ -176,48 +176,8 @@ class Reports extends Component {
 	render () {
 		const {dispatch, reports} = this.props;
 		return (
-			<div id="page">
-				<div id="searchform">
-					<form onSubmit={e => this.onSubmit(e)}>
-						<fieldset className="form-group">
-							<input type="text" ref={ref => this.searchbox = ref} onChange={e => this.filter(e)} className="form-control" id="exampleInputEmail1" placeholder="What are you looking for?" />
-						</fieldset>
-						<div className="row">
-							<Dropdown
-								{...this.props}
-								kind="categories"
-								placeholder="Add a department..."
-								label="Filter by department"
-								max={3}
-							/>
-							<Dropdown
-								{...this.props}
-								kind="sources"
-								placeholder="Add a source..."
-								label="Filter by source"
-								max={7}
-							/>
-							<Dropdown
-								{...this.props}
-								kind="tables"
-								placeholder="Add a table..."
-								label="Filter by table"
-								max={7}
-							/>
-							<Dropdown
-								{...this.props}
-								kind="fields"
-								placeholder="Add a field..."
-								label="Filter by field"
-								max={7}
-							/>
-						</div>
-						<fieldset className="sort-it">
-							<p>Sort: <a className="active">Alphabetical</a>, <a>Date Added</a>, <a>Date Modified</a></p>
-						</fieldset>
-					</form>
-				</div>
-				<ReportList reports={reports} />
+			<div id="reports">
+				{this.props.children}
 			</div>
 		);
 	}

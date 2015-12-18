@@ -108,7 +108,7 @@ function makeIt() {
 		title: _.sample(first) + " " + _.sample(second) + " " + _.sample(third),
 		url: "http://google.com",
 		enrollment: "http://yahoo.com",
-		description: "This report gives a list of Courses with their Titles, College, Course Number, with Location (Bldg/Room), Section Number, Meeting days and times, Instructors Names, Course Credit Hours, Max Enrollment, Number of Enrolled students and Available enrollments. It is mainly used to check the Status of a course enrollment and availability, where it is being held (Location); total number of seats seats used and seats available.",
+		description: "This is the report description.",
 		categories: [_.sample(["Marketing", "Faculty", "Operations", "Administration", "Analytics", "Board"])],
 		parameters: _.sample(words, range()),
 		fields: _.sample(words, range()),
@@ -136,7 +136,7 @@ export default {
 	get (filters = {}) {
 		var collection = [];
 
-		if (!filters.keyword && filters.categories.length === 0 && filters.fields.length === 0 && filters.sources.length === 0 && filters.tables.length === 0) {
+		if (filters.keywords.length === 0 && filters.categories.length === 0 && filters.fields.length === 0 && filters.sources.length === 0 && filters.tables.length === 0) {
 			collection = REPORTS;
 		}
 
@@ -147,13 +147,15 @@ export default {
 			var matchedSource = false;
 			var matchedTable = false;
 
-			if (filters.keyword !== null) {
-				let exp = new RegExp(filters.keyword.toLowerCase().trim());
-				matchedKeyword = exp.test(report.title.toLowerCase());
-			}
+			filters.keywords.forEach(function (keyword) {
+				matchedKeyword = report.title.split(" ").some(word => word.toLowerCase().includes(keyword.toLowerCase()));
+
+				if (!matchedKeyword) {
+					matchedKeyword = report.description.split(" ").some(word => word.toLowerCase().includes(keyword.toLowerCase()));
+				}
+			});
 
 			filters.categories.forEach(function (category) {
-
 				if (_.includes(report.categories, category)) {
 					matchedCategory = true;
 				}

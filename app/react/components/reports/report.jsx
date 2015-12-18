@@ -11,6 +11,7 @@ export default class Report extends Component {
 	render () {
 		const {title, department} = this.props;
 		var path = "/reports/" + slug(this.props.title).toLowerCase();
+		console.log(path);
 		return (
 			<div className="report">
 				<Link to={path} className="report-image">

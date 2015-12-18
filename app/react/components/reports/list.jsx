@@ -8,10 +8,13 @@ export default class ReportList extends Component {
 
 		if (reports.length > 0) {
 			return (
-				<div id="report-list">
-					{reports.map((report, index) =>
-						<Report {...report} key={index} />
-					)}
+				<div>
+					<span>Found {reports.length} reports</span>
+					<div id="report-list">
+						{reports.map((report, index) =>
+							<Report {...report} key={index} />
+						)}
+					</div>
 				</div>
 			);
 		} else {
