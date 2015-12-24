@@ -12,7 +12,9 @@ let options = {
 	categories: [],
 	fields: [],
 	sources: [],
-	tables: []
+	tables: [],
+	sort: "ABC",
+	order: "ASC"
 };
 
 export function receiveReports(reports) {

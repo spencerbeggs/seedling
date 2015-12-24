@@ -184,6 +184,14 @@ export default {
 			}
 		});
 
+		if (filters.sort === "ABC") {
+			collection = _.sortBy(collection, "title");
+		}
+
+		if (filters.order === "DESC") {
+			colelction = collection.reverse();
+		}
+
 		return collection;
 	}
 };

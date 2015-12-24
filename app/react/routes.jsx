@@ -22,14 +22,12 @@ export default function getRoutes(store) {
 	syncReduxAndRouter(history, store);
 
 	function requireAuth(nextState, replaceState) {
-		console.log(arguments);
 		// if (!store.getState().auth.token) {
 		// 	replaceState(null, `/react/login?nextPathname=${nextState.location.pathname}`);
 		// }
 	}
 
 	function checkLink() {
-		console.log("GGG");
 		console.log(arguments);
 	}
 

@@ -157,7 +157,28 @@ class Search extends Component {
 
 	constructor (props) {
 		super(props);
+		this.state = {
+			sort: "ABC",
+			order: "ASC"
+		};
+		this.sortBy = this.sortBy.bind(this);
 		this.filter = this.filter.bind(this);
+	}
+
+	sortBy (evt, sort, order) {
+		console.log(arguments);
+
+		if (sort) {
+			this.setState({
+				sort: sort
+			});
+		}
+
+		if (order) {
+			this.setState({
+				order: order
+			});
+		}
 	}
 
 	componentDidMount () {
@@ -212,7 +233,14 @@ class Search extends Component {
 							/>
 						</div>
 						<fieldset className="sort-it">
-							<p>Sort: <a className="active">Alphabetical</a>, <a>Date Added</a>, <a>Date Modified</a></p>
+							<p>Sort: <a
+								className={this.state.sort === "ABC" ? "selected" : ""}
+								onClick={this.sortBy.bind("ABC")}>
+								Alphabetical</a>,
+																																																																																																																																																																																																																																																																																																<a
+className={this.state.sort === "ADDED" ? "selected" : ""}
+										onClick={this.sortBy.bind("ADDED")}
+										> Date Added</a>, <a> Date Modified</a></p>
 						</fieldset>
 					</form>
 				</div>
