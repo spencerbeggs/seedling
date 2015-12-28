@@ -2,40 +2,73 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {fetchReport } from "../actions/reports";
 import slug from "slug";
+import {Link} from "react-router";
+import Highlight from "react-highlight";
 
 class Report extends Component {
+	constructor (props) {
+		super(props);
+		this.state = {
+			activeTab: "overview"
+		};
+	}
 
 	componentDidMount () {
 		const {dispatch} = this.props;
 	}
 
+	toggleTab (tab, evt) {
+		evt.preventDefault();
+		this.setState({
+			activeTab: tab
+		});
+	}
+
 	render () {
-		console.log(this.props);
 		var prevPath = `/reports/${this.props.prevPath}`;
 		var nextPath = `/reports/${this.props.nextPath}`;
+		var prevLink = "";
+		var nextLink = "";
+
+		if (this.props.prevPath) {
+			prevLink = <Link className="previous-report" to={prevPath}>← previous report</Link>;
+		}
+
+		if (this.props.nextPath) {
+			nextLink = <Link className="next-report" to={nextPath}>next report →</Link>;
+		}
+
 		return (
 			<div id="page" className="row">
 				<div className="col-md-4">
 					<img className="img-fluid" src="http://placehold.it/400x400" />
+					<div className="next-previous">
+						{prevLink}
+						{nextLink}
+					</div>
 				</div>
 				<div className="col-md-8">
 					<h1>{this.props.report.title}</h1>
+					<p>{this.props.report.description}</p>
 					<ul className="nav nav-tabs">
 						<li className="nav-item">
-							<a className="nav-link active" href="#">Overview</a>
+							<a className={this.state.activeTab === "overview" ? "nav-link active" : "nav-link"} onClick={this.toggleTab.bind(this, "overview")}>Overview</a>
 						</li>
 						<li className="nav-item">
-							<a className="nav-link" href="#">SQL</a>
-						</li>
-						<li className="nav-item">
-							<a className="nav-link" href="#">Another link</a>
-						</li>
-						<li className="nav-item">
-							<a className="nav-link disabled" href="#">Disabled</a>
+							<a className={this.state.activeTab === "sql" ? "nav-link active" : "nav-link"} onClick={this.toggleTab.bind(this, "sql")}>SQL</a>
 						</li>
 					</ul>
-					<a href={prevPath}>Previous</a>
-					<a href={nextPath}>Next</a>
+					<ul className="tab-content">
+						<li className={this.state.activeTab === "overview" ? "active" : ""}>
+							<p>overview</p>
+						</li>
+						<li className={this.state.activeTab === "sql" ? "active" : ""}>
+							<h4>SQL Queries in Report</h4>
+								<Highlight className="sql">
+									{this.props.report.sql}
+								</Highlight>
+						</li>
+					</ul>
 				</div>
 			</div>
 		);
@@ -57,8 +90,11 @@ function select(state) {
 		if (slug(item.title).toLowerCase() === theSlug) {
 			report = item;
 
-			if (i > 0 && arr.length > 1) {
+			if (i !== 0 && arr.length > 1) {
 				prevPath = slug(arr[i - 1].title).toLowerCase();
+			}
+
+			if (i >= 0 && arr.length > 1 && i !== arr.length - 1) {
 				nextPath = slug(arr[i + 1].title).toLowerCase();
 			}
 

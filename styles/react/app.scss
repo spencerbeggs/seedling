@@ -1,6 +1,7 @@
 @import "bootstrap";
 @import "components/spinner";
 //@import "components/tags";
+@import "components/highlight";
 
 $blue: #fff;
 
@@ -160,5 +161,25 @@ body {
 		&.selected {
 			font-weight: 600;
 		}
+	}
+}
+
+#reports {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	.tab-content {
+		padding: 1rem;
+		li {
+			display: none;
+			&.active {
+				display: block;
+			}
+		}
+	}
+}
+
+.next-previous {
+	.next-report {
+		float: right;
 	}
 }
