@@ -1,64 +1,55 @@
 import api from "../api/reports";
-import { createAction, handleAction, handleActions } from "redux-actions";
 import _ from "lodash";
 
-export const RECEIVE_REPORTS = "RECEIVE_REPORTS";
-export const REQUEST_REPORTS = "REQUEST_REPORTS";
-export const REQUEST_CATEGORIES = "REQUEST_CATEGORIES";
-export const RECEIVE_CATEGORIES = "RECEIVE_CATEGORIES";
+export const FETCH_REPORTS = "FETCH_REPORTS";
+export const FILTER_REPORTS = "FILTER_REPORTS";
+export const UPDATE_ORDER = "UPDATE_ORDER";
+export const ADD_CATEGORY = "ADD_CATEGORY";
+export const DELETE_CATEGORY = "DELETE_CATEGORY";
 
-let options = {
-	keywords: [],
-	categories: [],
-	fields: [],
-	sources: [],
-	tables: [],
-	sort: "ABC",
-	order: "ASC"
-};
-
-export function receiveReports(reports) {
-	return {
-		type: RECEIVE_REPORTS,
-		payload: reports
-	};
-}
-
-export function receiveCategories(reports) {
-	return {
-		type: RECEIVE_CATEGORIES,
-		payload: _.uniq(_.flatten(_.pluck(reports, "categories"))).sort()
-	};
-}
-
-export function requestReports() {
-	return {
-		type: REQUEST_REPORTS
-	};
-}
-
-export function fetchReports(opts = {}) {
+export function fetchReports() {
 	return function (dispatch) {
-		Object.assign(options, opts);
-		dispatch(requestReports());
-		dispatch(receiveReports(api.get(options)));
-	};
-}
-
-export function fetchCategories(opts = {}) {
-	return function (dispatch) {
-		Object.assign(options, opts);
 		dispatch({
-			type: REQUEST_CATEGORIES
+			type: FETCH_REPORTS,
+			payload: api.get()
 		});
-		dispatch(receiveCategories(api.get(options)));
 	};
 }
 
 export function filterReports(opts = {}) {
 	return function (dispatch) {
-		Object.assign(options, opts);
-		const data = api.get(options);
-		dispatch(receiveReports(data));
+		dispatch({
+			type: FILTER_REPORTS,
+			payload: opts
+		});
+	};
+}
+
+export function addCategory(category) {
+	if (typeof category === "string") {
+		category = [category];
+	}
+
+	return {
+		type: ADD_CATEGORY,
+		payload: category
+	};
+}
+
+export function deleteCategory(category) {
+	if (typeof category === "string") {
+		category = [category];
+	}
+
+	return {
+		type: DELETE_CATEGORY,
+		payload: category
+	};
+}
+
+export function updateOrder(order) {
+	return {
+		type: UPDATE_ORDER,
+		payload: order
 	};
 }

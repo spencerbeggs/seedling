@@ -95,6 +95,7 @@ function task(options) {
 			watch: config.app.is.dev,
 			plugins: plugins,
 			module: {
+				//noParse: [/(unicode\/category\/So)/],
 				loaders: [{
 					loader: "babel-loader",
 

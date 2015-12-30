@@ -126,7 +126,7 @@ function makeIt() {
 		url: "http://google.com",
 		enrollment: "http://yahoo.com",
 		description: "This is the report description.",
-		categories: [_.sample(["Marketing", "Faculty", "Operations", "Administration", "Analytics", "Board"])],
+		departments: _.sample(["Marketing", "Faculty", "Operations", "Administration", "Analytics", "Board"], 1),
 		parameters: _.sample(words, range()),
 		fields: _.sample(words, range()),
 		sources: _.sample(words, range()),
@@ -150,67 +150,7 @@ for (let i = 0; i < 100; i++) {
 
 export default {
 
-	get (filters = {}) {
-		var collection = [];
-
-		if (filters.keywords.length === 0 && filters.categories.length === 0 && filters.fields.length === 0 && filters.sources.length === 0 && filters.tables.length === 0) {
-			collection = REPORTS;
-		}
-
-		REPORTS.forEach(function (report) {
-			var matchedKeyword = false;
-			var matchedCategory = false;
-			var matchedField = false;
-			var matchedSource = false;
-			var matchedTable = false;
-
-			filters.keywords.forEach(function (keyword) {
-				if (!matchedKeyword) {
-					matchedKeyword = report.title.split(" ").some(word => word.toLowerCase().includes(keyword.toLowerCase()));
-
-					if (!matchedKeyword) {
-						matchedKeyword = report.description.split(" ").some(word => word.toLowerCase().includes(keyword.toLowerCase()));
-					}
-				}
-			});
-
-			filters.categories.forEach(function (category) {
-				if (_.includes(report.categories, category)) {
-					matchedCategory = true;
-				}
-			});
-
-			filters.fields.forEach(function (field) {
-				if (_.includes(report.fields, field)) {
-					matchedField = true;
-				}
-			});
-
-			filters.sources.forEach(function (source) {
-				if (_.includes(report.sources, source)) {
-					matchedSource = true;
-				}
-			});
-
-			filters.tables.forEach(function (table) {
-				if (_.includes(report.tables, table)) {
-					matchedTable = true;
-				}
-			});
-
-			if (matchedKeyword || matchedCategory || matchedField || matchedSource || matchedTable) {
-				collection.push(report);
-			}
-		});
-
-		if (filters.sort === "ABC") {
-			collection = _.sortBy(collection, "title");
-		}
-
-		if (filters.order === "DESC") {
-			colelction = collection.reverse();
-		}
-
-		return collection;
+	get () {
+		return REPORTS;
 	}
 };

@@ -183,3 +183,44 @@ body {
 		float: right;
 	}
 }
+
+.report-content {
+	button {
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
+}
+
+.sort-order {
+	display: inline-block;
+	margin-left: 5px;
+	position: relative;
+	top: 5px;
+	span {
+		display: block;
+		line-height: 1;
+		font-size: .75rem;
+	}
+	.active {
+		color: red;
+	}
+}
+
+.sort-it {
+	div {
+		display: inline-block;
+		margin-right: 5px;
+	}
+	a {
+		cursor: pointer;
+		&.selected {
+			cursor: default;
+		}
+	}
+	span {
+		cursor: pointer;
+		&.active {
+			cursor: default;
+		}
+	}
+}

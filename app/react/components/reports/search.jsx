@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { fetchReports, fetchCategories, filterReports} from "../../actions/reports";
+import { fetchReports, fetchCategories, filterReports, filterSearch} from "../../actions/reports";
 import ReportList from "./list.jsx";
-import Spinner from "../lib/spinner.jsx";
 import _ from "lodash";
 
 class Dropdown extends Component {
@@ -15,37 +14,16 @@ class Dropdown extends Component {
 		this.showSuggestions = this.showSuggestions.bind(this);
 		this.hideSuggestions = this.hideSuggestions.bind(this);
 		this.state = {
-			values: [],
-			possibilities: [],
-			suggestions: []
+			active: false
 		};
 	}
 
-	componentWillReceiveProps (nextProps) {
-		var possibilities = _.uniq(_.flatten(_.pluck(nextProps.reports, this.props.kind))).sort();
-		this.setState({possibilities: possibilities});
-	}
-
 	showSuggestions () {
-		var suggestions = [];
-		var normalizedValues = this.state.values.map(value => value.toLowerCase());
-		this.state.possibilities.forEach(word => {
-			let normalizedWord = word.toLowerCase();
-
-			if (normalizedWord.includes(this._input.value.toLowerCase()) && !_.contains(normalizedValues, normalizedWord)) {
-				suggestions.push(word);
-			}
-		});
-
-		if (suggestions.length === 0 && this._input.value === "") {
-			suggestions = this.state.possibilities;
-		}
-
-		this.setState({suggestions: suggestions});
+		this.setState({active: true});
 	}
 
 	hideSuggestions () {
-		this.setState({suggestions: []});
+		this.setState({active: false});
 	}
 
 	onKeyUp (evt) {
@@ -70,7 +48,7 @@ class Dropdown extends Component {
 		const {dispatch} = this.props;
 		let values = [];
 		let added = false;
-		this.state.values.forEach(value => {
+		this.props.values.forEach(value => {
 			if (value.toLowerCase() === tag.toLowerCase()) {
 				added = true;
 			}
@@ -82,7 +60,6 @@ class Dropdown extends Component {
 			values.push(tag);
 		}
 
-		this.setState({values: values});
 		let filter = {};
 		filter[this.props.kind] = values;
 		dispatch(filterReports(filter));
@@ -91,12 +68,11 @@ class Dropdown extends Component {
 	deleteTag (evt, tag) {
 		const {dispatch} = this.props;
 		var values = [];
-		this.state.values.forEach(word => {
+		this.props.values.forEach(word => {
 			if (word.toLowerCase() !== tag.toLowerCase()) {
 				values.push(word);
 			}
 		});
-		this.setState({values: values});
 		let filter = {};
 		filter[this.props.kind] = values;
 		dispatch(filterReports(filter));
@@ -106,20 +82,20 @@ class Dropdown extends Component {
 		var items = [];
 		var tags = [];
 
-		if (this.state.suggestions) {
-			this.state.suggestions.forEach((word, i) => {
+		if (this.props.suggestions) {
+			this.props.suggestions.forEach((word, i) => {
 				if (i < this.props.max) {
 					items.push(<a style={{cursor: "pointer"}} className="dropdown-item" key={i} onClick={evt => this.addTag(evt, word)}>{word}</a>);
 				}
 			});
 		}
 
-		if (this.state.suggestions.length > this.props.max) {
+		if (this.props.suggestions.length > this.props.max) {
 			items.push(<div key="divider" className="dropdown-divider"></div>);
-			items.push(<a key="showmore" className="dropdown-item disabled">+{this.state.suggestions.length - this.props.max} more not shown</a>);
+			items.push(<a key="showmore" className="dropdown-item disabled">+{this.props.suggestions.length - this.props.max} more not shown</a>);
 		}
 
-		this.state.values.forEach((value, i) => {
+		this.props.values.forEach((value, i) => {
 			tags.push(<li key={i}><div><div>{value}</div><span onClick={evt => this.deleteTag(evt, value)}>x</span></div></li>);
 		});
 
@@ -138,7 +114,7 @@ class Dropdown extends Component {
 					placeholder={this.props.placeholder}
 					onBlur={this.onBlur}
 				/>
-				<div className={items.length > 0 ? "dropdown open" : "dropdown"}>
+				<div className={this.state.active ? "dropdown open" : "dropdown"}>
 					<div className="dropdown-menu" aria-labelledby="dropdownMenu1">
 						{items}
 					</div>
@@ -157,33 +133,27 @@ class Search extends Component {
 
 	constructor (props) {
 		super(props);
-		this.state = {
-			sort: "ABC",
-			order: "ASC"
-		};
-		this.sortBy = this.sortBy.bind(this);
 		this.filter = this.filter.bind(this);
 	}
 
-	sortBy (evt, sort, order) {
-		console.log(arguments);
+	sort (sort) {
+		const {dispatch} = this.props;
 
 		if (sort) {
 			this.setState({
 				sort: sort
 			});
-		}
-
-		if (order) {
-			this.setState({
-				order: order
-			});
+			dispatch(filterReports({
+				sort: sort
+			}));
 		}
 	}
 
-	componentDidMount () {
-		const {dispatch, reports} = this.props;
-		dispatch(fetchReports());
+	order (order) {
+		const {dispatch} = this.props;
+		dispatch(filterReports({
+			order: order
+		}));
 	}
 
 	filter (evt) {
@@ -195,6 +165,12 @@ class Search extends Component {
 
 	render () {
 		const {dispatch, reports} = this.props;
+		let searchState = reports.get("search");
+		let suggestions = reports.get("suggestions");
+		var sortOrder = <div className="sort-order"><span className={searchState.order === "ASC" ? "active" : ""} onClick={this.order.bind(this, "ASC")}>▲</span><span className={searchState.order === "DESC" ? "active" : ""} onClick={this.order.bind(this, "DESC")}>▼</span></div>;
+		var sortAbc = <div><a className={searchState.sort === "ABC" ? "selected" : ""} onClick={this.sort.bind(this, "ABC")}>Alphabetical</a>{searchState.sort === "ABC" ? sortOrder : ""}</div>;
+		var sortAdded = <div><a className={searchState.sort === "ADDED" ? "selected" : ""} onClick={this.sort.bind(this, "ADDED")}>Date Added</a>{searchState.sort === "ADDED" ? sortOrder : ""}</div>;
+		var sortModified = <div><a className={searchState.sort === "MODIFIED" ? "selected" : ""} onClick={this.sort.bind(this, "MODIFIED")}>Date Modified</a>{searchState.sort === "MODIFIED" ? sortOrder : ""}</div>;
 		return (
 			<div id="search">
 				<div id="searchform">
@@ -205,10 +181,12 @@ class Search extends Component {
 						<div className="row">
 							<Dropdown
 								{...this.props}
-								kind="categories"
+								kind="departments"
 								placeholder="Add a department..."
 								label="Filter by department"
 								max={3}
+								suggestions={suggestions.departments}
+								values={searchState.departments}
 							/>
 							<Dropdown
 								{...this.props}
@@ -216,6 +194,8 @@ class Search extends Component {
 								placeholder="Add a source..."
 								label="Filter by source"
 								max={7}
+								suggestions={suggestions.sources}
+								values={searchState.sources}
 							/>
 							<Dropdown
 								{...this.props}
@@ -223,6 +203,8 @@ class Search extends Component {
 								placeholder="Add a table..."
 								label="Filter by table"
 								max={7}
+								suggestions={suggestions.tables}
+								values={searchState.tables}
 							/>
 							<Dropdown
 								{...this.props}
@@ -230,38 +212,23 @@ class Search extends Component {
 								placeholder="Add a field..."
 								label="Filter by field"
 								max={7}
+								suggestions={suggestions.fields}
+								values={searchState.fields}
 							/>
 						</div>
 						<fieldset className="sort-it">
-							<p>Sort: <a
-								className={this.state.sort === "ABC" ? "selected" : ""}
-								onClick={this.sortBy.bind("ABC")}>
-								Alphabetical</a>,
-																																																																																																																																																																																																																																																																																																<a
-className={this.state.sort === "ADDED" ? "selected" : ""}
-										onClick={this.sortBy.bind("ADDED")}
-										> Date Added</a>, <a> Date Modified</a></p>
+							<div>Sort:</div>{sortAbc}<div>,</div>{sortAdded}<div>,</div>{sortModified}
 						</fieldset>
 					</form>
 				</div>
-				<ReportList reports={reports} />
-				{this.props.children}
+				<ReportList {...this.props} />
 			</div>
 		);
 	}
 }
 
 Search.propTypes = {
-	reports: PropTypes.arrayOf(PropTypes.shape({
-		title: PropTypes.string.isRequired
-	}))
+	reports: PropTypes.object
 };
 
-function select(state) {
-	const reports = state.reports;
-	return {
-		reports: reports.toArray()
-	};
-}
-
-export default connect(select)(Search);
+export default Search;
