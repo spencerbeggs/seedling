@@ -178,8 +178,17 @@ body {
 }
 
 .next-previous {
+	text-align: center;
+	position: relative;
+	.previous-report {
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
 	.next-report {
-		float: right;
+		position: absolute;
+		right: 0;
+		top: 0;
 	}
 }
 

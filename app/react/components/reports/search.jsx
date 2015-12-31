@@ -138,11 +138,14 @@ class Search extends Component {
 
 	sort (sort) {
 		const {dispatch} = this.props;
-
-		if (sort) {
-			this.setState({
-				sort: sort
-			});
+		let currentOrder = this.props.reports.get("search").order;
+		let currentSort = this.props.reports.get("search").sort;
+		if (currentSort === sort) {
+			var newOrder = currentOrder === "ASC" ? "DESC" : "ASC";
+			dispatch(filterReports({
+				order: newOrder
+			}));
+		} else {
 			dispatch(filterReports({
 				sort: sort
 			}));

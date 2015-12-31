@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {fetchReport } from "../actions/reports";
-import slug from "slug";
+import slug from "speakingurl";
 import {Link} from "react-router";
 import Highlight from "react-highlight";
 
@@ -13,10 +13,6 @@ class Report extends Component {
 		};
 	}
 
-	componentDidMount () {
-		const {dispatch} = this.props;
-	}
-
 	toggleTab (tab, evt) {
 		evt.preventDefault();
 		this.setState({
@@ -25,6 +21,13 @@ class Report extends Component {
 	}
 
 	render () {
+		let visible = this.props.reports.get("visibleItems");
+		var current = "?";
+		visible.toArray().forEach((item, i) => {
+			if (this.props.params.slug === slug(item.title)) {
+				current = i + 1;
+			}
+		});
 		var prevPath = `/reports/${this.props.prevPath}`;
 		var nextPath = `/reports/${this.props.nextPath}`;
 		var prevLink = "";
@@ -73,13 +76,13 @@ class Report extends Component {
 
 			sources += source;
 		});
-
 		return (
 			<div id="page" className="row">
 				<div className="col-md-4">
 					<img className="img-fluid" src="http://placehold.it/400x400" />
 					<div className="next-previous">
 						{prevLink}
+						<Link to="/reports">{current} of {visible.size}</Link>
 						{nextLink}
 					</div>
 				</div>
@@ -128,7 +131,7 @@ function select(state) {
 	const reports = state.reports;
 	var report = false;
 	let theSlug = state.routing.path.split("/").pop();
-	let arr = reports.toArray();
+	let arr = reports.get("visibleItems").toArray();
 	var nextPath = false;
 	var prevPath = false;
 	arr.some((item, i) => {
