@@ -168,9 +168,9 @@ class Search extends Component {
 		let searchState = reports.get("search");
 		let suggestions = reports.get("suggestions");
 		var sortOrder = <div className="sort-order"><span className={searchState.order === "ASC" ? "active" : ""} onClick={this.order.bind(this, "ASC")}>▲</span><span className={searchState.order === "DESC" ? "active" : ""} onClick={this.order.bind(this, "DESC")}>▼</span></div>;
-		var sortAbc = <div><a className={searchState.sort === "ABC" ? "selected" : ""} onClick={this.sort.bind(this, "ABC")}>Alphabetical</a>{searchState.sort === "ABC" ? sortOrder : ""}</div>;
-		var sortAdded = <div><a className={searchState.sort === "ADDED" ? "selected" : ""} onClick={this.sort.bind(this, "ADDED")}>Date Added</a>{searchState.sort === "ADDED" ? sortOrder : ""}</div>;
-		var sortModified = <div><a className={searchState.sort === "MODIFIED" ? "selected" : ""} onClick={this.sort.bind(this, "MODIFIED")}>Date Modified</a>{searchState.sort === "MODIFIED" ? sortOrder : ""}</div>;
+		var sortAbc = <div className="sorter"><a className={searchState.sort === "ABC" ? "selected" : ""} onClick={this.sort.bind(this, "ABC")} title="Alphabetical">Alphabetical</a>{searchState.sort === "ABC" ? sortOrder : ""}</div>;
+		var sortAdded = <div className="sorter"><a className={searchState.sort === "ADDED" ? "selected" : ""} onClick={this.sort.bind(this, "ADDED")} title="Date Added">Date Added</a>{searchState.sort === "ADDED" ? sortOrder : ""}</div>;
+		var sortModified = <div className="sorter"><a className={searchState.sort === "MODIFIED" ? "selected" : ""} onClick={this.sort.bind(this, "MODIFIED")} title="Date Modified">Date Modified</a>{searchState.sort === "MODIFIED" ? sortOrder : ""}</div>;
 		return (
 			<div id="search">
 				<div id="searchform">
@@ -216,8 +216,8 @@ class Search extends Component {
 								values={searchState.fields}
 							/>
 						</div>
-						<fieldset className="sort-it">
-							<div>Sort:</div>{sortAbc}<div>,</div>{sortAdded}<div>,</div>{sortModified}
+						<fieldset className="sort-it col-md-8 col-md-offset-2">
+							<div>Sort:</div>{sortAbc}<div>|</div>{sortAdded}<div>|</div>{sortModified}
 						</fieldset>
 					</form>
 				</div>

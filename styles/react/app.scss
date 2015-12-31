@@ -3,10 +3,9 @@
 //@import "components/tags";
 @import "components/highlight";
 
-$blue: #fff;
 
 body {
-	background-color: $blue;
+	background-color: #FFF;
 }
 
 #page {
@@ -200,21 +199,45 @@ body {
 		display: block;
 		line-height: 1;
 		font-size: .75rem;
+		color: gray;
 	}
 	.active {
-		color: red;
+		color: $link-color;
 	}
 }
 
 .sort-it {
+	line-height: 1;
+	color: #999;
 	div {
 		display: inline-block;
-		margin-right: 5px;
+		position: relative;
+		&.sorter {
+			padding-left: 20px;
+			padding-right: 20px;
+		}
+	}
+	.sort-order {
+		position: absolute;
+		top: 1px;
+		right: 3px;
 	}
 	a {
+		display: inline-block;
 		cursor: pointer;
+		position: relative;
+		top: 3px;
 		&.selected {
 			cursor: default;
+		}
+		&::after {
+			display: block;
+			content: attr(title);
+			font-weight: bold;
+			height: 1px;
+			color: transparent;
+			overflow: hidden;
+			visibility: hidden;
 		}
 	}
 	span {
